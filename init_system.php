@@ -2,7 +2,7 @@
 /**
  * 系统设置中心
  * @author suhuiling
- * @version 1
+ * @version 2
  * @package ost_sys
  */
 if (isset($init_page) == false) {
@@ -93,7 +93,7 @@ if(isset($_GET['return']) == true){
 ?>
 <!-- 系统设置 -->
 <h2>系统设置</h2>
-<form action="init.php?init=12&edit=1" method="post" class="form-actions">
+<form action="<?php echo $page_url; ?>&edit=1" method="post" class="form-actions">
     <div class="control-group">
         <label class="control-label" for="config_web_title">网站标题，不能为空或大于150字</label>
         <div class="controls">
@@ -144,7 +144,7 @@ if(isset($_GET['return']) == true){
         <div>
             <p>&nbsp;</p>
             <button type="submit" class="btn btn-primary"><i class="icon-ok icon-white"></i> 修改设置</button>
-            <a href="init.php?init=12&return=1" class="btn btn-warning"><i class="icon-repeat icon-white"></i> 还原系统设置</a>
+            <a href="<?php echo $page_url; ?>&return=1" class="btn btn-warning"><i class="icon-repeat icon-white"></i> 还原系统设置</a>
         </div>
     </div>
 </form>

@@ -2,7 +2,7 @@
 /**
  * 用户页面
  * @author suhuiling
- * @version 1
+ * @version 2
  * @package ost_sys
  */
 if (isset($init_page) == false) {
@@ -95,10 +95,10 @@ $group_list = $oauser->view_group_list(1, 999, 0, true);
 <!-- 页码 -->
 <ul class="pager">
     <li class="previous<?php if($page<=1){ echo ' disabled'; } ?>">
-        <a href="init.php?init=14&page=<?php echo $page_prev; ?>">&larr; 上一页</a>
+        <a href="<?php echo $page_url; ?>&page=<?php echo $page_prev; ?>">&larr; 上一页</a>
     </li>
     <li class="next<?php if($page>=$page_max){ echo ' disabled'; } ?>">
-        <a href="init.php?init=14&page=<?php echo $page_next; ?>">下一页 &rarr;</a>
+        <a href="<?php echo $page_url; ?>&page=<?php echo $page_next; ?>">下一页 &rarr;</a>
     </li>
 </ul>
 

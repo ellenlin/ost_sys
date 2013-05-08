@@ -2,7 +2,7 @@
 /**
  * 修改个人信息页面
  * @author suhuiling
- * @version 1
+ * @version 2
  * @package ost_sys
  */
 if (isset($init_page) == false) {
@@ -42,7 +42,7 @@ if (!$self_user) {
 ?>
 <!-- 管理表格 -->
 <h2>修改个人信息</h2>
-<form action="init.php?init=7" method="post" class="form-actions">
+<form action="<?php echo $page_url; ?>" method="post" class="form-actions">
     <div class="control-group">
         <label class="control-label" for="edit_email">邮箱</label>
         <div class="controls">

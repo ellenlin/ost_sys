@@ -2,7 +2,7 @@
 /**
  * 消息中心页面
  * @author suhuiling
- * @version 1
+ * @version 2
  * @package ost_sys
  */
 if (isset($init_page) == false) {
@@ -142,10 +142,10 @@ $message_list = $oapost->view_list($post_user, null, null, 'public', 'message', 
 <!-- 页码 -->
 <ul class="pager">
     <li class="previous<?php if($page<=1){ echo ' disabled'; } ?>">
-        <a href="init.php?init=11&page=<?php echo $page_prev; ?>">&larr; 上一页</a>
+        <a href="<?php echo $page_url; ?>&page=<?php echo $page_prev; ?>">&larr; 上一页</a>
     </li>
     <li class="next<?php if($page>=$page_max){ echo ' disabled'; } ?>">
-        <a href="init.php?init=11&page=<?php echo $page_next; ?>">下一页 &rarr;</a>
+        <a href="<?php echo $page_url; ?>&page=<?php echo $page_next; ?>">下一页 &rarr;</a>
     </li>
 </ul>
 
@@ -155,7 +155,7 @@ if (isset($_GET['edit']) == false && isset($_GET['view']) == false) {
     <!-- 发布新通知 -->
     <h2>发布新的系统通知</h2>
     <p>所有用户均会收到该通知。</p>
-    <form action="init.php?init=11" method="post" class="form-actions">
+    <form action="<?php echo $page_url; ?>" method="post" class="form-actions">
         <div class="control-group">
             <label class="control-label" for="new_message">系统通知内容</label>
             <div class="controls">
@@ -183,7 +183,7 @@ if (isset($_GET['edit']) == true && isset($_GET['view']) == false) {
         <div id="edit">
             <h2>编辑系统通知</h2>
             <p>编辑系统通知。</p>
-            <form action="init.php?init=11" method="post" class="form-actions">
+            <form action="<?php echo $page_url; ?>" method="post" class="form-actions">
                 <div class="control-group">
                     <div class="controls hide">
                         <input type="text" id="edit_id" name="edit_id" value="<?php echo $edit_message['id']; ?>">
@@ -200,7 +200,7 @@ if (isset($_GET['edit']) == true && isset($_GET['view']) == false) {
                     </div>
                     <div>
                         <button type="submit" class="btn btn-primary"><i class="icon-ok icon-white"></i> 修改</button>
-                        <a href="init.php?init=11" role="button" class="btn"><i class="icon-remove"></i> 取消</a>
+                        <a href="<?php echo $page_url.'&edit='.$_GET['edit']; ?>" role="button" class="btn"><i class="icon-remove"></i> 取消</a>
                     </div>
                 </div>
             </form>
@@ -218,7 +218,7 @@ if (isset($_GET['edit']) == true && isset($_GET['view']) == false) {
                     <p>&nbsp;</p>
                     <p>&nbsp;&nbsp;&nbsp;&nbsp;<?php echo $view_message['post_content']; ?></p>
                     <p>&nbsp;</p>
-                    <p><a href="init.php?init=11" role="button" class="btn"><i class="icon-arrow-left"></i> 返回</a></p>
+                    <p><a href="<?php echo $page_url; ?>" role="button" class="btn"><i class="icon-arrow-left"></i> 返回</a></p>
                 </div>
                 <?php
             }

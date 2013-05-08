@@ -1,14 +1,20 @@
 -- phpMyAdmin SQL Dump
--- version 3.5.7
+-- version 3.5.2.2
 -- http://www.phpmyadmin.net
 --
--- 主机: localhost
--- 生成日期: 2013 年 03 月 20 日 03:16
--- 服务器版本: 5.1.44
--- PHP 版本: 5.3.1
+-- 主机: 127.0.0.1
+-- 生成日期: 2013 年 05 月 08 日 10:08
+-- 服务器版本: 5.5.27
+-- PHP 版本: 5.4.7
 
 SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
+
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8 */;
 
 --
 -- 数据库: `ost_sys`
@@ -67,19 +73,19 @@ CREATE TABLE IF NOT EXISTS `ost_configs` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `id` (`id`),
   UNIQUE KEY `config_name` (`config_name`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=3 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=7 ;
 
 --
 -- 转存表中的数据 `ost_configs`
 --
 
 INSERT INTO `ost_configs` (`id`, `config_name`, `config_value`, `config_default`) VALUES
-(1, 'WEB_TITLE', '计算机专业考研真题练习系统', '计算机专业考研真题练习系统'),
-(2, 'USER_TIMEOUT', '900', '900'),
-(3, 'UPLOADFILE_SIZE_MIN', '1','1'),
-(4, 'UPLOADFILE_SIZE_MAX', '153600','153600'),
-(5, 'UPLOADFILE_ON', '1','1'),
-(6, 'UPLOADFILE_INHIBIT_TYPE', 'exe,bat,php,html,htm,shall','exe,bat,php,html,htm,shall');
+(1, 'WEB_TITLE', 0xe8aea1e7ae97e69cbae4b893e4b89ae88083e7a094e79c9fe9a298e6a8a1e68b9fe88083e8af95e7b3bbe7bb9f, 0xe8aea1e7ae97e69cbae4b893e4b89ae88083e7a094e79c9fe9a298e6a8a1e68b9fe88083e8af95e7b3bbe7bb9f),
+(2, 'USER_TIMEOUT', 0x393030, 0x393030),
+(3, 'UPLOADFILE_SIZE_MIN', 0x31, 0x31),
+(4, 'UPLOADFILE_SIZE_MAX', 0x313533363030, 0x313533363030),
+(5, 'UPLOADFILE_ON', 0x31, 0x31),
+(6, 'UPLOADFILE_INHIBIT_TYPE', 0x6578652c6261742c7068702c68746d6c2c68746d2c7368616c6c, 0x6578652c6261742c7068702c68746d6c2c68746d2c7368616c6c);
 
 -- --------------------------------------------------------
 
@@ -134,14 +140,15 @@ CREATE TABLE IF NOT EXISTS `ost_user` (
   UNIQUE KEY `id` (`id`),
   UNIQUE KEY `user_username` (`user_username`),
   KEY `user_group` (`user_group`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=2 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=3 ;
 
 --
 -- 转存表中的数据 `ost_user`
 --
 
 INSERT INTO `ost_user` (`id`, `user_username`, `user_password`, `user_email`, `user_name`, `user_group`, `user_date`, `user_login_date`, `user_ip`, `user_session`, `user_status`, `user_remember`) VALUES
-(1, 'admin', 'dd94709528bb1c83d08f3088d4043f4742891f4f', 'admin@admin.com', '管理员', 1, '2013-03-20 11:15:57', '2013-03-20 11:15:57', 2, 'cfcd208495d565ef66e7dff9f98764da', 1, 1);
+(1, 'admin', 'dd94709528bb1c83d08f3088d4043f4742891f4f', 'admin@admin.com', '管理员', 1, '2013-03-20 11:15:57', '2013-05-08 15:48:50', 0, '9640v7v2tegn0s03cqvn8l1ka5', 1, 0),
+(2, '苏荟灵', '601f1889667efaebb33b8c12572835da3f027f78', 'ellen1635@163.com', '林儿', 2, '2013-05-08 12:18:31', '2013-05-08 12:18:31', 2, 'cfcd208495d565ef66e7dff9f98764da', 0, 0);
 
 -- --------------------------------------------------------
 
@@ -157,12 +164,16 @@ CREATE TABLE IF NOT EXISTS `ost_user_group` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `id` (`id`),
   UNIQUE KEY `group_name` (`group_name`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=2 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=3 ;
 
 --
 -- 转存表中的数据 `ost_user_group`
 --
 
 INSERT INTO `ost_user_group` (`id`, `group_name`, `group_power`, `group_status`) VALUES
-(1, '管理员组', 'admin', 1),
-(2, '普通用户组', 'normal', 1);
+(1, '管理员组', 0x61646d696e, 1),
+(2, '普通用户组', 0x6e6f726d616c, 1);
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
