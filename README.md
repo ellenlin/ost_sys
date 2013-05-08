@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 OA-SYS
 ======
 
@@ -56,3 +57,7 @@ x 备份和恢复类、界面
 用户名：oasysadmin
 
 密码：adminadmin
+=======
+ost_sys
+=======
+>>>>>>> branch 'master' of https://github.com/ellenlin/ost_sys.git
