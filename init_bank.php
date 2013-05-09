@@ -19,7 +19,7 @@ $sort = 0;
 $desc = true;
 
 /**
- * 操作消息内容
+ * 操作题库内容
  * @since 1
  */
 $message = '';
@@ -29,24 +29,37 @@ $message_bool = false;
  * 添加新的题库
  * @since 1
  */
-if (isset($_POST['new_message']) == true && isset($_POST['new_name']) == true) {
-    $title = '';
-    if (isset($_POST['new_title']) == true) {
-        $title = $_POST['new_title'];
-    } else {
-        //引入截取字符串模块
-        require(DIR_LIB . DS . 'plug-substrutf8.php');
-        $title = plugsubstrutf8($_POST['new_message'], 100);
+if (isset($_POST['select']) == true) {
+    $post_name='';
+    if($_POST['select']==1){
+         $post_name='计算机';
+    }else if($_POST['select']==2){
+         $post_name='英语';
+    }else if($_POST['select']==3){
+         $post_name='政治';
+    }else{
+         $post_name='数学';
     }
-    $new_user_view = $oauser->view_user_name($_POST['new_name']);
-    if ($oapost->add($title, null, 'bank', 0, null, null, $new_user_view['id'], null, 'public', null)) {
-         $message = '题库添加成功！';
-         $message_bool = true;
-     } else {
-         $message = '无法添加题库。';
-         $message_bool = false;
-     }
 }
+if (isset($_POST['new_message']) == true) {
+    $title = '';
+    //引入截取字符串模块
+    require_once(DIR_LIB . DS . 'plug-substrutf8.php');
+    if (isset($_POST['new_title']) == true && $_POST['new_title']) {
+        $title = plugsubstrutf8($_POST['new_title'], 15);
+    } else {
+        $title = plugsubstrutf8($_POST['new_message'], 30);
+    }
+    
+    if ($oapost->add($title, null, 'bank', 0, null, null, $post_name, null, 'public', null)) {
+        $message = '添加题库成功！';
+        $message_bool = true;
+    } else {
+        $message = '无法添加新的题库。';
+        $message_bool = false;
+    }
+}
+
 
 /**
  * 删除题库
@@ -55,7 +68,7 @@ if (isset($_POST['new_message']) == true && isset($_POST['new_name']) == true) {
 if (isset($_GET['del']) == true) {
     $del_view = $oapost->view($_GET['del']);
     if ($del_view) {
-        if ($del_view['post_status'] == 'private' && ($del_view['post_user'] == $post_user || $del_view['post_name'] == $post_user)) {
+        if ($del_view['post_status'] == 'public' && $del_view['post_type'] == 'bank' && $del_view['post_name'] == $post_user) {
             if ($oapost->del($_GET['del'])) {
                 $message = '删除题库成功！';
                 $message_bool = true;
@@ -68,7 +81,7 @@ if (isset($_GET['del']) == true) {
             $message_bool = false;
         }
     } else {
-        $message = '无法删除该题库，该消息不存在。';
+        $message = '无法删除该题库，该题库不存在。';
         $message_bool = false;
     }
 }
@@ -149,12 +162,12 @@ if (isset($_GET['view']) == false) {
     <form action="<?php echo $page_url; ?>" method="post" class="form-actions">
         <div class="control-group">
             <label class="control-label" for="new_name">专业科目</label>
-            <div class="controls">
+            <div class="bs-docs-example">
                 <select>
-                    <option>计算机</option>
-                    <option>英语</option>
-                    <option>政治</option>
-                    <option>数学</option>
+                    <option value="1">计算机</option>
+                    <option value="2">英语</option>
+                    <option value="3">政治</option>
+                    <option value="4">数学</option>
                 </select>
             </div>
             <label class="control-label" for="new_message">名称</label>

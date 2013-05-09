@@ -130,10 +130,10 @@ $message_list = $oapost->view_list($post_user, null, null, 'public', 'message', 
         <?php if($message_list){ foreach($message_list as $v){ ?>
         <tr>
             <td><?php echo $v['id']; ?></td>
-            <td><?php $message_user = $oauser->view_user($v['post_user']); if($message_user){ echo '<a href="init.php?init=11&user='.$message_user['id'].'" target="_self">'.$message_user['user_name'].'</a>'; unset($message_user); } ?></td>
+            <td><?php $message_user = $oauser->view_user($v['post_user']); if($message_user){ echo '<a href="init.php?init=7&user='.$message_user['id'].'" target="_self">'.$message_user['user_name'].'</a>'; unset($message_user); } ?></td>
             <td><?php echo $v['post_date']; ?></td>
-            <td><a href="init.php?init=11&view=<?php echo $v['id']; ?>#view" target="_self"><?php echo $v['post_title']; ?></a></td>
-            <td><div class="btn-group"><a href="init.php?init=11&edit=<?php echo $v['id']; ?>#edit" role="button" class="btn"><i class="icon-pencil"></i> 编辑</a><a href="init.php?init=11&del=<?php echo $v['id']; ?>" class="btn btn-danger"><i class="icon-trash icon-white"></i> 删除</a></div></td>
+            <td><a href="<?php echo $page_url;?>&view=<?php echo $v['id']; ?>#view" target="_self"><?php echo $v['post_title']; ?></a></td>
+            <td><div class="btn-group"><a href="<?php echo $page_url;?>&edit=<?php echo $v['id']; ?>#edit" role="button" class="btn"><i class="icon-pencil"></i> 编辑</a><a href="<?php echo $page_url;?>&del=<?php echo $v['id']; ?>" class="btn btn-danger"><i class="icon-trash icon-white"></i> 删除</a></div></td>
         </tr>
         <?php } } ?>
     </tbody>

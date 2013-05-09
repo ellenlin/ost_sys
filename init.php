@@ -2,7 +2,7 @@
 /**
  * 登录后首页
  * @author suhuiling
- * @version 1
+ * @version 2
  * @package ost_sys
  */
 /**
@@ -29,7 +29,7 @@ if (isset($_GET['init']) == true) {
         plugerror('noadmin');
     }
 }
-$init_page_arr = array('center', 'self_message','address_book','edit_info', 'add', 'edit', 'del', 'message_center', 'user', 'message_board','my_error','my_favorites', 'test_center', 'ace_list');
+$init_page_arr = array('center', 'self_message','address_book','edit_info', 'bank', 'question', 'record', 'message_center', 'user', 'message_board','my_error','my_favorites', 'test_center', 'ace_list');
 if (isset($init_page_arr[$init_page]) == false) {
     $init_page = 0;
 }
@@ -160,11 +160,11 @@ $tip_message_row = $oapost->view_list_row(null, null, null, 'private', 'message'
                             <?php } ?>
                             <?php if($logged_admin == true){ ?>
                             <li class="dropdown">
-                                <a  href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="icon-wrench icon-white"></i> 题库管理<b class="caret"></b></a>
+                                <a  href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="icon-wrench icon-white"></i> 考务管理<b class="caret"></b></a>
                                 <ul class="dropdown-menu">
-                                    <li><a href="init.php?init=4"><i class="icon-edit"></i> 添加</a></li>
-                                    <li><a href="init.php?init=5"><i class="icon-pencil"></i> 修改</a></li>
-                                    <li><a href="init.php?init=6" target="_self"><i class="icon-remove"></i> 删除</a></li>
+                                    <li><a href="init.php?init=4"><i class="icon-briefcase"></i> 题库管理</a></li>
+                                    <li><a href="init.php?init=5"><i class="icon-folder-close"></i> 题目管理</a></li>
+                                    <li><a href="init.php?init=6" target="_self"><i class="icon-align-justify"></i> 考试记录管理</a></li>
                                 </ul>
                             </li>
                             <li class="dropdown">
@@ -210,10 +210,10 @@ $tip_message_row = $oapost->view_list_row(null, null, null, 'private', 'message'
                             <li><a href="init.php?init=12"><i class="icon-retweet"></i> 考试中心</a></li>
                             <?php } ?>
                             <?php if($logged_admin == true){ ?>
-                            <li class="nav-header">题库管理</li>
-                            <li><a href="init.php?init=4"><i class="icon-edit"></i> 添加</a></li>
-                            <li><a href="init.php?init=5"><i class="icon-pencil"></i> 修改</a></li>
-                            <li><a href="init.php?init=6" target="_self"><i class="icon-remove"></i> 删除</a></li>
+                            <li class="nav-header">考务管理</li>
+                            <li><a href="init.php?init=4"><i class="icon-briefcase"></i> 题库管理</a></li>
+                            <li><a href="init.php?init=5"><i class="icon-folder-close"></i> 题目管理</a></li>
+                            <li><a href="init.php?init=6" target="_self"><i class="icon-align-justify"></i> 考试记录管理</a></li>
                             <li class="nav-header">系统</li>
                             <li><a href="init.php?init=7"><i class="icon-envelope"></i> 消息中心</a></li>
                             <!--<li><a href="init.php?init=12"><i class="icon-asterisk"></i> 系统设置</a></li>-->
