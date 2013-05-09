@@ -41,7 +41,7 @@ if (isset($_POST['select']) == true) {
          $post_name='数学';
     }
 }
-if (isset($_POST['new_message']) == true) {
+if (isset($_POST['new_message']) == true&&$_POST['new_message']) {
     $title = '';
     //引入截取字符串模块
     require_once(DIR_LIB . DS . 'plug-substrutf8.php');
@@ -58,6 +58,9 @@ if (isset($_POST['new_message']) == true) {
         $message = '无法添加新的题库。';
         $message_bool = false;
     }
+}else{
+     $message = '题库名称不能为空。';
+     $message_bool = false;
 }
 
 
@@ -68,7 +71,7 @@ if (isset($_POST['new_message']) == true) {
 if (isset($_GET['del']) == true) {
     $del_view = $oapost->view($_GET['del']);
     if ($del_view) {
-        if ($del_view['post_status'] == 'public' && $del_view['post_type'] == 'bank' && $del_view['post_name'] == $post_user) {
+        if ($del_view['post_status'] == 'public' && $del_view['post_type'] == 'bank' ) {
             if ($oapost->del($_GET['del'])) {
                 $message = '删除题库成功！';
                 $message_bool = true;
@@ -130,8 +133,8 @@ $message_list = $oapost->view_list(null, null, null, 'public', 'bank', $page, $m
             <td><?php echo $v['post_date']; ?></td>
             <td><?php echo $v['post_name']; ?></td>
             <td><?php echo $v['post_title']; ?></td>
-           
-            <td><div class="btn-group"><a href="<?php echo $page_url.'&view='.$v['id']; ?>" class="btn" target="_self"><i class="icon-pencil"></i> 修改</a><a href="<?php echo $page_url.'&del='.$v['id']; ?>" class="btn btn-danger" target="_self"><i class="icon-trash icon-white"></i> 删除</a></div></td>
+            <td><div class="btn-group"><a href="<?php echo $page_url;?>&edit=<?php echo $v['id']; ?>#edit" role="button" class="btn"><i class="icon-pencil"></i> 编辑</a><a href="<?php echo $page_url;?>&del=<?php echo $v['id']; ?>" class="btn btn-danger"><i class="icon-trash icon-white"></i> 删除</a></div></td>
+            
         </tr>
         <?php } } ?>
     </tbody>
@@ -163,8 +166,8 @@ if (isset($_GET['view']) == false) {
         <div class="control-group">
             <label class="control-label" for="new_name">专业科目</label>
             <div class="bs-docs-example">
-                <select>
-                    <option value="1">计算机</option>
+                <select name="select">
+                    <option value="1" selected>计算机</option>
                     <option value="2">英语</option>
                     <option value="3">政治</option>
                     <option value="4">数学</option>
@@ -182,21 +185,52 @@ if (isset($_GET['view']) == false) {
 
         <?php
 }
+if (isset($_GET['edit']) == true && isset($_GET['view']) == false) {
+    $edit_message = $oapost->view($_GET['edit']);
+    if ($edit_message) {
+        ?>
+        <!-- 编辑题库信息 -->
+        <div id="edit">
+            <h2>编辑题库信息</h2>
+            <p>编辑题库信息。</p>
+             <form action="<?php echo $page_url; ?>" method="post" class="form-actions">
+        <div class="control-group">
+            <label class="control-label" for="new_name">专业科目</label>
+            <div class="bs-docs-example">
+                <select name="select">
+                    <option value="1" selected>计算机</option>
+                    <option value="2">英语</option>
+                    <option value="3">政治</option>
+                    <option value="4">数学</option>
+                </select>
+            </div>
+            <label class="control-label" for="new_message">名称</label>
+            <div class="controls">
+                <textarea rows="2" id="new_message" name="new_message" placeholder="名称"></textarea>
+            </div>
+                    <div>
+                        <button type="submit" class="btn btn-primary"><i class="icon-ok icon-white"></i> 修改</button>
+                        <a href="<?php echo $page_url.'&edit='.$_GET['edit']; ?>" role="button" class="btn"><i class="icon-remove"></i> 取消</a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    <?php
+    }
+}
         if (isset($_GET['view']) == true) {
             $view_message = $oapost->view($_GET['view']);
             if ($view_message) {
-                if($view_message['post_name'] == $post_user){
                 ?>
-                <!-- 查看消息详情 -->
+                <!-- 编辑题库信息 -->
                 <div id="view" class="form-actions">
-                    <p><strong><?php echo $view_message['post_title']; ?></strong><em>&nbsp;<?php echo $view_message['post_date']; ?> - <?php $message_user = $oauser->view_user($view_message['post_user']); if($message_user){ echo '<a href="'.$page_url.'&user='.$message_user['id'].'" target="_self">'.$message_user['user_name'].'</a>'; unset($message_user); } ?></em></p>
+                    <p><strong><?php echo $view_message['post_title']; ?></strong><em>&nbsp;<?php echo $view_message['post_date']; ?> - <?php $message_user = $oauser->view_user($view_message['post_user']); if($message_user){ echo '<a href="init.php?init=4&user='.$message_user['id'].'" target="_self">'.$message_user['user_name'].'</a>'; unset($message_user); } ?></em></p>
                     <p>&nbsp;</p>
                     <p>&nbsp;&nbsp;&nbsp;&nbsp;<?php echo $view_message['post_content']; ?></p>
                     <p>&nbsp;</p>
-                    <p><a href="<?php echo $page_url.'&user='.$view_message['id']; ?>" role="button" class="btn"><i class="icon-envelope"></i> 回复</a><a href="<?php echo $page_url; ?>" role="button" class="btn"><i class="icon-repeat"></i> 返回</a></p>
+                    <p><a href="<?php echo $page_url; ?>" role="button" class="btn"><i class="icon-arrow-left"></i> 返回</a></p>
                 </div>
                 <?php
-                }
             }
         }
         ?>
@@ -211,4 +245,3 @@ if (isset($_GET['view']) == false) {
                 }
             });
         </script>
-
