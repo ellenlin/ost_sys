@@ -29,7 +29,7 @@ if (isset($_GET['init']) == true) {
         plugerror('noadmin');
     }
 }
-$init_page_arr = array('center', 'self_message','address_book','edit_info', 'bank', 'question', 'record', 'message_center', 'user', 'message_board','my_error','my_favorites', 'test_center', 'ace_list');
+$init_page_arr = array('center', 'self_message','address_book','edit_info', 'bank', 'question', 'record', 'message_center', 'user', 'message_board','my_error','my_favorite', 'test_center', 'ace_list');
 if (isset($init_page_arr[$init_page]) == false) {
     $init_page = 0;
 }
