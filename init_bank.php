@@ -40,7 +40,7 @@ if (isset($_POST['new_message']) == true && isset($_GET['new']) == true && isset
         $title = '';
         //引入截取字符串模块
         require_once(DIR_LIB . DS . 'plug-substrutf8.php');
-        $title = plugsubstrutf8($_POST['new_title'], 15);
+        $title = plugsubstrutf8($_POST['new_message'], 15);
         $post_name = 0;
         if (isset($select_bank_arr[(int) $_POST['select']]) == true) {
             $post_name = (int) $_POST['select'];
@@ -75,10 +75,10 @@ if (isset($_POST['edit_title']) == true && isset($_POST['edit_name']) == true &&
                 $post_name = (int) $_POST['edit_name'];
             }
             if ($oapost->edit($edit_res['id'], $title, null, 'bank', 0, null, null, $post_name, null, 'public', null)) {
-                $message = '添加题库成功！';
+                $message = '编辑题库成功！';
                 $message_bool = true;
             } else {
-                $message = '无法添加新的题库。';
+                $message = '无法编辑题库。';
                 $message_bool = false;
             }
         } else {
