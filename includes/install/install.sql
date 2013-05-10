@@ -172,7 +172,7 @@ CREATE TABLE IF NOT EXISTS `ost_user_group` (
 
 INSERT INTO `ost_user_group` (`id`, `group_name`, `group_power`, `group_status`) VALUES
 (1, '管理员组', 0x61646d696e, 1),
-(2, '普通用户组', 0x6e6f726d616c, 1);
+(2, '学生组', 0x6e6f726d616c, 1);
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

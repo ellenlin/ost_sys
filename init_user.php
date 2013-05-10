@@ -2,7 +2,7 @@
 /**
  * 用户页面
  * @author suhuiling
- * @version 2
+ * @version 3
  * @package ost_sys
  */
 if (isset($init_page) == false) {
@@ -42,7 +42,7 @@ $page_next = $page + 1;
 $userlist = $oauser->view_user_list($group, $page, $max, $sort, $desc);
 
 /**
- * 获取所有用户组
+ * 获取所有用户
  */
 $group_list = $oauser->view_group_list(1, 999, 0, true);
 ?>
@@ -174,7 +174,7 @@ $group_list = $oauser->view_group_list(1, 999, 0, true);
                 "add_group":$("#add_group").val()
             },function(data){
                 msg(data,"添加用户成功！","无法添加用户，请检查您输入的用户名、密码、邮箱等信息是否正确。");
-                tourl(1500,"init.php?init=14");
+                tourl(1500,"<?php echo $page_url; ?>");
             });
         });
         //编辑用户
