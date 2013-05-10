@@ -2,18 +2,19 @@
 /**
  * 错误响应页面
  * @author suhuiling
- * @version 1
+ * @version 2
  * @package ost_sys
  */
 $error_arr = array(
     'login' => '登录失败，可能是您的用户名或密码错误！<a href="index.php" target="_self">点击这里返回登录页面。</a>',
     'logged' => '您还没有登录，或者操作超时，请尝试重新登录。<a href="index.php" target="_self">点击这里返回登录页面。</a>',
     'noadmin' => '您不是管理员，无法访问该页面。',
-    'selferror'=>'无法获取用户数据，请尝试重新登录。',
-    'uploadfile'=>'文件上传失败，请重试。',
-    'uploadfile-off'=>'上传功能已经关闭了。',
-    'uploadfile-size'=>'上传文件超过限制大小。',
-    'uploadfile-type'=>'系统禁止上传该文件类型。');
+    'selferror' => '无法获取用户数据，请尝试重新登录。',
+    'uploadfile' => '文件上传失败，请重试。',
+    'uploadfile-off' => '上传功能已经关闭了。',
+    'uploadfile-size' => '上传文件超过限制大小。',
+    'uploadfile-type' => '系统禁止上传该文件类型。',
+    'register' => '注册失败，请重新确认您的用户名或密码。');
 ?>
 <!DOCTYPE html>
 <html>

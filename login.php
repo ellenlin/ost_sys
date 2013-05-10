@@ -3,7 +3,7 @@
 /**
  * 登录处理
  * @author suhuiling
- * @version 1
+ * @version 2
  * @package ost_sys
  */
 /**
@@ -28,9 +28,16 @@ if (isset($_POST['user']) == true && isset($_POST['pass']) == true && isset($_PO
         $remember = true;
     }
     $user = new oauser($db);
+    $login_bool = false;
     if ($_POST['s'] == '1') {
-        $login_bool = $user->add_user($_POST['user'], $_POST['pass'], 'user@user.com', $_POST['name'], 2, $_GET['ip_id']);
+        $login_bool = $user->add_user($_POST['user'], $_POST['pass'], 'user@user.com', $_POST['user'], 2, $ip_arr['id']);
+        if ($login_bool == false) {
+            plugtourl('error.php?e=register');
+        }
     } else {
+        $login_bool = true;
+    }
+    if ($login_bool == true) {
         $login_bool = $user->login($_POST['user'], $_POST['pass'], $ip_arr['id'], $remember);
         if ($login_bool == true) {
             plugtourl('init.php');
