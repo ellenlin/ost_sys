@@ -6,9 +6,6 @@
  * @package ost_sys
  */
  
- require_once(DIR_LIB . DS. 'oa-post.php');
-
-
  if (isset($init_page) == false) {
     die();
 }
@@ -28,33 +25,34 @@ $desc = true;
  * @since 2
  */
 $select_bank_arr = array('计算机','英语','政治','数学');
+require_once(DIR_LIB . DS . 'oa-post.php');
+require_once (DIR.LIB . DS .'plug-substr8.php' );
+//require_once(DIR_LIB . DS . 'plug-subject.php');
+ 
+$plugsubject = new plug-subject($sort, $db, $max, $_POST[$user]);
 
-require(DIR_LIB . DS . 'plug-subject.php');
-
-html_put();
-
-
+if (isset($_POST[$select_subject]) == true){
+        $post_type = $select_bank_arr['$select_subject'];
+}
  ?>
 <h2>考试中心</h2>
-<label class="control-label" for="new_name"><h4>选择专业科目　　　　　　选择题库</h4></label>
+<label class="control-label" for="new_name"><h4>选择专业科目　　　　　　选择题库　　　　　　　　　　　　　　　　　　　考试剩余时间：45:32</h4></label>
              <div class="bs-docs-example">
-                <select name="select">
-                    <?php foreach($select_bank_arr as $k=>$v){ ?>
-                    <option value="<?php echo $k; ?>"><?php echo $v; ?></option>
-                    <?php } ?>
+                <select name="select_subject">
+                    <option>计算机</option>
                 </select>
            
-                <select>
-                    
+                <select name="select_bank">
+                    <option>2009年综合408</option>
                 </select>
+                 <button type="submit" class="btn btn-primary"><i class="icon-ok icon-white"></i> 开始考试</button>　
+                 
             </div>
 <table class="table table-hover table-bordered table-striped">
     <thead>
         <tr>
-            <th><i class="icon-calendar"></i> 时间</th>
-            <th><i class="icon-tag"></i>专业科目</th>
-            <th><i class="icon-comment"></i> 分数</th>
-            <th><i class="icon-asterisk"></i> 操作</th>
+            <th>一、单选题（每题2分，共40题）</th>
         </tr>
+       
     </thead>
 </table>
