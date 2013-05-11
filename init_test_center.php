@@ -2,7 +2,7 @@
 /**
  * 考试中心
  * @author suhuiling
- * @version 2
+ * @version 3
  * @package ost_sys
  */
 if (isset($init_page) == false) {
@@ -38,17 +38,20 @@ require_once(DIR_LIB . DS . 'plug-substrutf8.php');
 <!-- HTML -->
 <h2>考试中心</h2>
 <div class="row">
-    <div class="span4" id="select_tip"><h4>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;选择专业科目&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;选择题库</h4></div>
-    <div class="span3 offset2" id="time_id"></div>
+    <div class="span4 offset1" id="time_id">
+        <h4>选择专业科目 | 选择题库</h4>
+    </div>
 </div>
-<div class="bs-docs-example">
-    <select name="select_subject">
-        <option>计算机</option>
-    </select>
-    <select name="select_bank">
-        <option>2009年综合408</option>
-    </select>
-    <button type="submit" class="btn btn-primary btn-large" id="button_start"><i class="icon-ok icon-white"></i> 开始考试</button>
+<div class="row">
+    <div class="span4 offset1" id="select_input">
+        <select name="select_subject" class="input-small">
+            <option>计算机</option>
+        </select>
+        <select name="select_bank" class="input-medium">
+            <option>2009年综合408</option>
+        </select>
+        <button type="submit" class="btn btn-primary btn-large" id="button_start"><i class="icon-ok icon-white"></i> 开始考试</button>
+    </div>
 </div>
 <hr>
 <form action="<?php echo $page_url; ?>" method="post">
@@ -57,7 +60,6 @@ require_once(DIR_LIB . DS . 'plug-substrutf8.php');
             <tr>
                 <th>一、单选题（每题2分，共40题）</th>
             </tr>
-
         </thead>
     </table>
 </form>
@@ -97,11 +99,10 @@ require_once(DIR_LIB . DS . 'plug-substrutf8.php');
                 time_i.setMilliseconds(Math.abs($("#time_id").data("length")));
                 time_start = time_i.getTime();
                 clearTimeout(time_handle);
-                time_handle = setTimeout("time_next()", 1000);
+                time_next();
                 //替换掉相关内容
                 $("#button_start").html('<i class="icon-ok icon-white"></i> 交卷');
-                $("#select_tip").html("");
-                $("div[class='bs-docs-example'] > select").remove();
+                $("#select_input > select").fadeOut();
             }else{
                 test_submit();
             }
