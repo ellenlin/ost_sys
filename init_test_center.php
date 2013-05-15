@@ -89,7 +89,7 @@ require_once(DIR_LIB . DS . 'plug-substrutf8.php');
     //开始执行脚本
     $(document).ready(function() {
         //考试时长(秒)
-        $("#time_id").data("length", <?php echo 3600*1000; ?>);
+        $("#time_id").data("length", <?php echo 3600*2000; ?>);
         //开始考试按钮
         $("#button_start").click(function() {
             if(test_on == false){

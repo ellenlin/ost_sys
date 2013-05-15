@@ -53,7 +53,7 @@ if (!$self_user) {
         </div>
     </div>
     <div class="control-group">
-        <label class="control-label" for="edit_name">昵称</label>
+        <label class="control-label" for="edit_name">昵称（不影响用户名）</abel>
         <div class="controls">
             <div class="input-prepend">
                 <span class="add-on">@</span>
