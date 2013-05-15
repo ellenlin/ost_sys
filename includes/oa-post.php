@@ -20,7 +20,7 @@ class oapost {
      * @since 5
      * @var array 
      */
-    private $type_values = array('message' => 'message', 'text' => 'text', 'addressbook' => 'addressbook', 'messageboard' => 'messageboard','bank' => 'bank','question' => 'question','record_q' => 'question_q','record_b' => 'record_b');
+    private $type_values = array('message' => 'message', 'text' => 'text', 'addressbook' => 'addressbook', 'messageboard' => 'messageboard','bank' => 'bank','question' => 'question','record_q' => 'question_q','record_b' => 'record_b','favorite'=>'favorite','error'=>'error');
 
     /**
      * 表名称

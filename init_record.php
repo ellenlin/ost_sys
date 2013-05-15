@@ -33,7 +33,7 @@ $message_bool = false;
 if (isset($_GET['del']) == true) {
     $del_view = $oapost->view($_GET['del']);
     if ($del_view) {
-        if ($del_view['post_status'] == 'public' && $del_view['post_type'] == 'record_b') {
+        if ($del_view['post_status'] == 'private' && $del_view['post_type'] == 'record_b') {
             if ($oapost->del($_GET['del'])) {
                 $message = '删除考试记录成功！';
                 $message_bool = true;
@@ -55,7 +55,7 @@ if (isset($_GET['del']) == true) {
  * 获取考试记录列表记录数
  * @since 3
  */
-$message_list_row = $oapost->view_list_row(null, null, null, 'public', 'record_b', null, '');
+$message_list_row = $oapost->view_list_row(null, null, null, 'private', 'record_b', null, '');
 
 /**
  * 计算页码
@@ -76,7 +76,7 @@ $page_next = $page + 1;
  * 获取考试记录列表
  * @since 3
  */
-$message_list = $oapost->view_list(null, null, null, 'public', 'record_b', $page, $max, $sort, $desc, null, '');
+$message_list = $oapost->view_list(null, null, null, 'private', 'record_b', $page, $max, $sort, $desc, null, '');
 ?>
 <!-- 管理表格 -->
 <h2>考试记录中心</h2>

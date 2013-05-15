@@ -18,6 +18,11 @@ $max = 10;
 $sort = 0;
 $desc = true;
 
+
+require_once(DIR_LIB . DS . 'oa-post.php');
+require_once(DIR_LIB . DS . 'plug-substrutf8.php');
+//require_once(DIR_LIB . DS . 'plug-subject.php');
+
 /**
  * 操作题目内容
  * @since 1
@@ -120,13 +125,13 @@ if (isset($_GET['del']) == true) {
  * 获取题目列表记录数
  * @since 3
  */
-$message_list_row = $oapost->view_list_row(null, null, null, 'public', 'question', null, '');
+$question_list_row = $oapost->view_list_row(null, null, null, 'public', 'question', null, '');
 
 /**
  * 计算页码
  * @since 1
  */
-$page_max = ceil($message_list_row / $max);
+$page_max = ceil($question_list_row / $max);
 if ($page < 1) {
     $page = 1;
 } else {
@@ -141,7 +146,7 @@ $page_next = $page + 1;
  * 获取题目列表
  * @since 3
  */
-$message_list = $oapost->view_list(null, null, null, 'public', 'question', $page, $max, $sort, $desc, null, '');
+$question_list = $oapost->view_list(null, null, null, 'public', 'question', $page, $max, $sort, $desc, null, '');
 
 
 /**
@@ -167,15 +172,15 @@ $bank_list = $oapost->view_list(null, null, null, 'public', 'bank', $page, $max,
             <th><i class="icon-asterisk"></i> 操作</th>
         </tr>
     </thead>
-    <tbody id="message_list">
-        <?php if($message_list){ foreach($message_list as $v){ ?>
+    <tbody id="question_list">
+        <?php if($question_list){ foreach($question_list as $v){ ?>
         <tr>
             <td><?php echo $v['post_date']; ?></td>
             <td><?php 
                 $bank_list= $oapost->view($v['post_parent']);
             if($bank_list){  ?>
             <?php echo $bank_list['post_title']; ?><?php }  ?></td>
-            <td><?php if(isset($select_bank_arr[$v['post_name']])){ echo $select_bank_arr[$v['post_name']]; } ?></td>
+            <td><?php echo $v['post_title'];  ?></td>
             <td><?php echo $v['post_title']; ?></td>
             <td><div class="btn-group"><a href="<?php echo $page_url;?>&edit=<?php echo $v['id']; ?>#edit" role="button" class="btn"><i class="icon-pencil"></i> 编辑</a><a href="<?php echo $page_url;?>&del=<?php echo $v['id']; ?>" class="btn btn-danger"><i class="icon-trash icon-white"></i> 删除</a></div></td>
         </tr>
@@ -209,9 +214,9 @@ if (isset($_GET['view']) == false && isset($_GET['edit']) == false) {
         <div class="control-group">
             <label class="control-label" for="new_name">选择题库</label>
             <div class="bs-docs-example">
-                <select name="select">
-                    
-                </select>
+               <select name="select_bank" class="input-medium">
+                <?php if($bank_list){ foreach($bank_list as $v){ ?><option value="<?php echo $v['id']; ?>"><?php echo $v['post_title']; ?></option><?php } } ?>
+               </select>
             </div>
             <label class="control-label" for="new_message">名称</label>
             <div class="controls">
