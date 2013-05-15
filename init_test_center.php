@@ -75,9 +75,9 @@ require_once(DIR_LIB . DS . 'plug-substrutf8.php');
     <table class="table table-hover table-bordered table-striped">
         <thead>
             <tr>
-                <th><?php if($selcet_bank_arr[(int)$_GET['select_bank']]=='政治'){?></th>
-            <tr>
-                <th><?php echo $politics_explain_arr[0] ?><?php }?></th>
+                <?php if(isset($_POST['select_bank']) == true){?>
+                    <?php if($selcet_bank_arr[(int)$_GET['select_bank']]=='政治'){?>
+                <th><?php echo $politics_explain_arr[0] ?><?php } }?></th>
 
             </tr>
         </thead>

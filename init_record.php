@@ -136,17 +136,7 @@ if (isset($_GET['view']) == false && isset($_GET['edit']) == false) {
             $view_message = $oapost->view($_GET['view']);
             if ($view_message) {
                 ?>
-    <!-- 查看考试记录信息 -->
-            <div id="view" class="form-actions">
-                <p>
-                    <strong><?php echo $view_message['post_title']; ?></strong>
-                    <em>&nbsp;<?php echo $view_message['post_date']; ?> - <?php $message_user = $oauser->view_user($view_message['post_user']); if($message_user){ echo '<a href="init.php?init=4&user='.$message_user['id'].'" target="_self">'.$message_user['user_name'].'</a>'; unset($message_user); } ?></em>
-                </p>
-                <p>&nbsp;</p>
-                <p>&nbsp;&nbsp;&nbsp;&nbsp;<?php echo $view_message['post_content']; ?></p>
-                <p>&nbsp;</p>
-                <p><a href="<?php echo $page_url; ?>" role="button" class="btn"><i class="icon-arrow-left"></i> 返回</a></p>
-            </div>
+            
                 <?php
             }
         }
