@@ -4,7 +4,7 @@
  * 题目操作类
  * <p>需要：oa-post类、plug-substrutf8模块</p>
  * @author fotomxq <fotomxq.me>
- * @version 1
+ * @version 2
  * @package PlugSubject
  */
 class plugsubject extends oapost {
@@ -25,7 +25,7 @@ class plugsubject extends oapost {
 
     /**
      * 题目类型标识数组
-     * <p>radio-单选 ; check-多选 ; boolean-判断 ; content-问答</p>
+     * <p>0-radio-单选 ; 1-check-多选 ; 2-boolean-判断 ; 3-content-问答</p>
      * @since 1
      * @var array 
      */
@@ -79,15 +79,15 @@ class plugsubject extends oapost {
 
     /**
      * 查询题目列表
-     * @since 1
+     * @since 2
      * @param int $page 页数
      * @param type $max 页长
-     * @param int $order 排序字段
+     * @param int $sort 排序字段
      * @param boolean $desc 排序方式
      * @param int $user 筛选用户ID
      * @return null|array
      */
-    public function view_list($page = 1, $max = 10, $order = 7, $desc = true, $user = null) {
+    public function view_subject_list($page = 1, $max = 10, $sort = 7, $desc = true, $user = null) {
         return parent::view_list($user, null, null, 'public', $this->post_type, $page, $max, $sort, $desc, $this->bank_id);
     }
 
@@ -95,18 +95,19 @@ class plugsubject extends oapost {
      * 输出当前题库所有题目HTML
      * <p>需要配合bootstrap才能达到最佳效果</p>
      * <p>仅生成表单组件，表单需要提前在页面中定义</p>
-     * @since 1
+     * @since 2
      * @return string
      */
-    public function html_put() {
+    public function html_get() {
         $return = '';
-        $res = $this->view_list(1, 999, 7, true, null);
+        $res = $this->view_subject_list(1, 999, 7, true, null);
         if ($res) {
+            $question_id = 1;
             foreach ($res as $v) {
                 $v_res = parent::view($v['id']);
                 $content_arr = $this->question_get_arr($v_res['post_content']);
                 $html_name = 'input_' . $v['id'];
-                $return .= '<dl><dt>' . $v_res['post_title'] . '</dt><dd>';
+                $return .= '<dl><dt>第' .$question_id.'题 : '. $v_res['post_title'] . '</dt><dd>';
                 switch ($v_res) {
                     case 0:
                         $v_q_arr = $this->question_select_get_arr($content_arr[0]);
@@ -130,6 +131,7 @@ class plugsubject extends oapost {
                         break;
                 }
                 $return .= '</dd></dl>';
+                $question_id ++;
                 $v_res = null;
             }
         }
@@ -138,46 +140,48 @@ class plugsubject extends oapost {
     
     /**
      * 遍历考试结果并记录
-     * @since 1
+     * @since 2
      * @param type $inputs
      * @return boolean
      */
-    public function html_get($inputs){
+    public function html_put($inputs){
         $return = false;
         return $return;
     }
 
     /**
      * 添加新的题目
-     * @since 1
-     * @param string $title 标题 可以留空，留空后自动截取部分$content用于标题
-     * @param string $content 内容和答案
+     * @since 2
+     * @param string $title 标题
+     * @param string $content 内容
+     * @param string $answer 答案
      * @param string $type 题目类型
      * @param int $fraction 分数
      * @return int 记录ID
      */
-    public function add($title, $content, $type, $fraction) {
-        $title = $title ? $title : $this->title_get($content);
-        return parent::add($title, $content, $this->post_type, $this->bank_id, $this->user_id, null, $this->question_type($type), $fraction, 'public', null);
+    public function add_subject($title, $content, $answer, $type, $fraction) {
+        $post_content = $this->get_content($content, $answer, $type);
+        return parent::add($title, $post_content, $this->post_type, $this->bank_id, $this->user_id, null, $this->question_type($type), $fraction, 'public', null);
     }
 
     /**
      * 编辑题目
-     * @since 1
+     * @since 2
      * @param int $id 题目ID
-     * @param string $title 标题 可以留空，留空后自动截取部分$content用于标题
-     * @param string $content 内容和答案
+     * @param string $title 标题
+     * @param string $content 内容
+     * @param string $answer 答案
      * @param int $type 题目类型
      * @param int $fraction 分数
      * @return boolean
      */
-    public function edit($id, $title, $content, $type, $fraction) {
+    public function edit_subject($id, $title, $content, $answer, $type, $fraction) {
         $return = false;
         $view_res = parent::view($id);
         if ($view_res) {
             if ($view_res['post_type'] == $this->post_type) {
-                $title = $title ? $title : $this->title_get($content);
-                $return = parent::edit($view_res['id'], $title, $content, $this->post_type, $view_res['post_parent'], $view_res['post_user'], null, $this->question_type($type), $fraction, $view_res['post_status'], null);
+                $post_content = $this->get_content($content, $answer, $type);
+                $return = parent::edit($view_res['id'], $title, $post_content, $this->post_type, $view_res['post_parent'], $view_res['post_user'], null, $this->question_type($type), $fraction, $view_res['post_status'], null);
             }
         }
         return $return;
@@ -191,6 +195,51 @@ class plugsubject extends oapost {
      */
     public function del_all($bank_id) {
         return parent::del_parent($bank_id);
+    }
+
+    /**
+     * post_content生成器
+     * @since 2
+     * @param string|array $content 题目内容
+     * @param string $answer 答案
+     * @param int $type 题目类型
+     * @return string
+     */
+    private function get_content($content, $answer, $type) {
+        $return = '';
+        $post_content = '';
+        $post_answer = '';
+        switch ($type) {
+            case 0:
+                //单选题
+                if (is_array($content) == true) {
+                    $post_content = implode($this->delimiter, $content);
+                    $post_answer = $answer;
+                }
+                break;
+            case 1:
+                //复选题
+                if (is_array($content) == true) {
+                    $post_content = implode($this->delimiter, $content);
+                    if(is_array($answer) == true){
+                        $post_answer = implode($this->delimiter, $answer);
+                    }
+                }
+                break;
+            case 2:
+                //判断题
+                $post_content = $content;
+                $post_answer = $answer ? 1 : 0;
+                break;
+            case 3:
+            default:
+                //问答题
+                $post_content = $content;
+                $post_answer = $answer;
+                break;
+        }
+        $return = $post_content . $this->delimiter_content . $post_answer;
+        return $return;
     }
 
     /**
@@ -245,8 +294,8 @@ class plugsubject extends oapost {
      * @return boolean
      */
     private function check_bank_type($bank_id) {
-        $bank_res = $this->post->view($bank_id);
-        if ($bank_re['post_type'] == 'bank') {
+        $bank_res = parent::view($bank_id);
+        if ($bank_res['post_type'] == 'bank') {
             return true;
         }
         return false;

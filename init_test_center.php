@@ -2,7 +2,7 @@
 /**
  * 考试中心
  * @author suhuiling
- * @version 3
+ * @version 4
  * @package ost_sys
  */
 if (isset($init_page) == false) {
@@ -21,6 +21,7 @@ $desc = true;
 
 /**
  * 获取所有题库列表
+ * @since 1
  */
 $bank_list = $oapost->view_list(null, null, null, 'public', 'bank', $page, $max, $sort, $desc, null, '');
 
@@ -29,7 +30,8 @@ $bank_list = $oapost->view_list(null, null, null, 'public', 'bank', $page, $max,
  * 题库类型数组
  * @since 2
  */
-$select_bank_arr = array('计算机', '英语', '政治', '数学');
+require(DIR_LIB.DS.'plug-banktype.php');
+$bank_type = pluggetbank($oaconfig);
 
 /**
  * 政治题库题目说明数组
@@ -39,16 +41,22 @@ $politics_explain_arr=array('一、单项选择题：1～16小题，每小题1�
                            '三、分析题：34～38小题，每小题10分，共50分。要求结合所学知识分析材料并回答问题。将答案写在答题纸指定位置上。',
     );
 
+/**
+ * 引入题目操作模块
+ * @since 4
+ */
 require_once(DIR_LIB . DS . 'oa-post.php');
 require_once(DIR_LIB . DS . 'plug-substrutf8.php');
-//require_once(DIR_LIB . DS . 'plug-subject.php');
-/*
-  $plugsubject = new plugsubject($sort, $db, $max, $_POST[$user]);
+require_once(DIR_LIB . DS . 'plug-subject.php');
 
-  if (isset($_POST[$select_subject]) == true){
-  $post_type = $select_bank_arr['$select_subject'];
-  }
+/**
+ * 获取题目数据
+ * @since 4
  */
+$plugsubject = new plugsubject(3, $db, $ip_arr['id'], $post_user);
+//$plugsubject->add_subject('题目测试2', '题目2内容', 0, 5);
+//$plugsubject->edit_subject(6, '题目测试1修改', '判断题测试1', 1, 2, 15);
+$question_html = $plugsubject->html_get();
 ?>
 <!-- HTML -->
 <h2>考试中心</h2>
@@ -60,9 +68,9 @@ require_once(DIR_LIB . DS . 'plug-substrutf8.php');
 <div class="row">
     <div class="span4 offset1" id="select_input">
         <select name="select_subject" class="input-small">
-            <?php foreach($select_bank_arr as $k=>$v){ ?>
-                    <option value="<?php echo $k; ?>"><?php echo $v; ?></option>
-                    <?php } ?>
+            <?php foreach($bank_type as $k=>$v){ ?>
+            <option value="<?php echo $k; ?>"><?php echo $v; ?></option>
+            <?php } ?>
         </select>
         <select name="select_bank" class="input-medium">
             <?php if($bank_list){ foreach($bank_list as $v){ ?><option value="<?php echo $v['id']; ?>"><?php echo $v['post_title']; ?></option><?php } } ?>
@@ -72,16 +80,7 @@ require_once(DIR_LIB . DS . 'plug-substrutf8.php');
 </div>
 <hr>
 <form action="<?php echo $page_url; ?>" method="post">
-    <table class="table table-hover table-bordered table-striped">
-        <thead>
-            <tr>
-                <?php if(isset($_POST['select_bank']) == true){?>
-                    <?php if($selcet_bank_arr[(int)$_GET['select_bank']]=='政治'){?>
-                <th><?php echo $politics_explain_arr[0] ?><?php } }?></th>
-
-            </tr>
-        </thead>
-    </table>
+    <?php echo $question_html; ?>
 </form>
 
 <!-- Javascript -->

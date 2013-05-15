@@ -2,7 +2,7 @@
 /**
  * 题库页面
  * @author suhuiling
- * @version 2
+ * @version 3
  * @package ost_sys
  */
 if (isset($init_page) == false) {
@@ -29,7 +29,8 @@ $message_bool = false;
  * 题库类型数组
  * @since 2
  */
-$select_bank_arr = array('计算机','英语','政治','数学');
+require(DIR_LIB.DS.'plug-banktype.php');
+$select_bank_arr = pluggetbank($oaconfig);
 
 /**
  * 添加新的题库
