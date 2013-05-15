@@ -20,10 +20,25 @@ $desc = true;
 
 
 /**
+ * 获取所有题库列表
+ */
+$bank_list = $oapost->view_list(null, null, null, 'public', 'bank', $page, $max, $sort, $desc, null, '');
+
+
+/**
  * 题库类型数组
  * @since 2
  */
 $select_bank_arr = array('计算机', '英语', '政治', '数学');
+
+/**
+ * 政治题库题目说明数组
+ */
+$politics_explain_arr=array('一、单项选择题：1～16小题，每小题1分，共16分。下列每题给出的四个选项中，只有一个选项是符合题目要求的。请在答题卡上将所选项的字母涂黑。',
+                           '二、多项选择题：17～33题，每小题2分，共34分。下列每题给出的四个选项中，至少有两个选项是符合题目要求的。请在答题卡上将所选项的字母涂黑。多选或少选均不得分。',
+                           '三、分析题：34～38小题，每小题10分，共50分。要求结合所学知识分析材料并回答问题。将答案写在答题纸指定位置上。',
+    );
+
 require_once(DIR_LIB . DS . 'oa-post.php');
 require_once(DIR_LIB . DS . 'plug-substrutf8.php');
 //require_once(DIR_LIB . DS . 'plug-subject.php');
@@ -45,10 +60,12 @@ require_once(DIR_LIB . DS . 'plug-substrutf8.php');
 <div class="row">
     <div class="span4 offset1" id="select_input">
         <select name="select_subject" class="input-small">
-            <option>计算机</option>
+            <?php foreach($select_bank_arr as $k=>$v){ ?>
+                    <option value="<?php echo $k; ?>"><?php echo $v; ?></option>
+                    <?php } ?>
         </select>
         <select name="select_bank" class="input-medium">
-            <option>2009年综合408</option>
+            <?php if($bank_list){ foreach($bank_list as $v){ ?><option value="<?php echo $v['id']; ?>"><?php echo $v['post_title']; ?></option><?php } } ?>
         </select>
         <button type="submit" class="btn btn-primary btn-large" id="button_start"><i class="icon-ok icon-white"></i> 开始考试</button>
     </div>
@@ -58,7 +75,10 @@ require_once(DIR_LIB . DS . 'plug-substrutf8.php');
     <table class="table table-hover table-bordered table-striped">
         <thead>
             <tr>
-                <th>一、单选题（每题2分，共40题）</th>
+                <?php if(isset($_POST['select_bank']) == true){?>
+                    <?php if($selcet_bank_arr[(int)$_GET['select_bank']]=='政治'){?>
+                <th><?php echo $politics_explain_arr[0] ?><?php } }?></th>
+
             </tr>
         </thead>
     </table>
