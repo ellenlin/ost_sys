@@ -60,7 +60,7 @@ require_once(DIR_LIB . DS . 'plug-substrutf8.php');
 <div class="row">
     <div class="span4 offset1" id="select_input">
         <select name="select_subject" class="input-small">
-            <<?php foreach($select_bank_arr as $k=>$v){ ?>
+            <?php foreach($select_bank_arr as $k=>$v){ ?>
                     <option value="<?php echo $k; ?>"><?php echo $v; ?></option>
                     <?php } ?>
         </select>
@@ -75,7 +75,7 @@ require_once(DIR_LIB . DS . 'plug-substrutf8.php');
     <table class="table table-hover table-bordered table-striped">
         <thead>
             <tr>
-                <th><?php if($selcet_bank_arr[(int)$_POST['select_bank']]=='政治'){?></th>
+                <th><?php if($selcet_bank_arr[(int)$_GET['select_bank']]=='政治'){?></th>
             <tr>
                 <th><?php echo $politics_explain_arr[0] ?><?php }?></th>
 

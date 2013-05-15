@@ -33,7 +33,7 @@ $message_bool = false;
 if (isset($_GET['del']) == true) {
     $del_view = $oapost->view($_GET['del']);
     if ($del_view) {
-        if ($del_view['post_status'] == 'public' && $del_view['post_type'] == 'bank') {
+        if ($del_view['post_status'] == 'public' && $del_view['post_type'] == 'record_b') {
             if ($oapost->del($_GET['del'])) {
                 $message = '删除考试记录成功！';
                 $message_bool = true;
@@ -95,14 +95,17 @@ $message_list = $oapost->view_list(null, null, null, 'public', 'record_b', $page
         <tr>
             <td><?php 
             $user_list= $oauser->view_user($v['post_user']);
-            if($user_list){ foreach($user_list as $t){ ?>
-            <?php echo $t['user_username']; ?><?php } } ?>
+            if($user_list){  ?>
+            <?php echo $user_list['user_username']; ?><?php } ?>
             <td><?php echo $v['post_date']; ?></td>
-            <td><?php echo $v['post_parent']; ?></td>
+            <td><?php 
+                $bank_list= $oapost->view($v['post_parent']);
+            if($bank_list){  ?>
+            <?php echo $bank_list['post_title']; ?><?php }  ?></td>
             <td><?php echo $v['post_url']; ?></td>
             <td><div class="btn-group"><a href="<?php echo $page_url;?>&del=<?php echo $v['id']; ?>" class="btn btn-danger"><i class="icon-trash icon-white"></i> 删除</a></div></td>
         </tr>
-        <?php } } ?>
+        <?php }  }?>
     </tbody>
 </table>
 

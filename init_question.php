@@ -141,18 +141,27 @@ $page_next = $page + 1;
  * 获取题目列表
  * @since 3
  */
-$message_list = $oapost->view_list(null, null, null, 'public', 'bank', $page, $max, $sort, $desc, null, '');
+$message_list = $oapost->view_list(null, null, null, 'public', 'question', $page, $max, $sort, $desc, null, '');
+
+
+/**
+ * 获取所有题库列表
+ */
+$bank_list = $oapost->view_list(null, null, null, 'public', 'bank', $page, $max, $sort, $desc, null, '');
+
+
 ?>
 <!-- 管理表格 -->
 <h2>题目中心</h2>
 <h5>选择题库</h5>
-<select>
-    
+<select name="select_bank" class="input-medium">
+    <?php if($bank_list){ foreach($bank_list as $v){ ?><option value="<?php echo $v['id']; ?>"><?php echo $v['post_title']; ?></option><?php } } ?>
 </select>
 <table class="table table-hover table-bordered table-striped">
     <thead>
         <tr>
             <th><i class="icon-calendar"></i> 时间</th>
+            <th><i class="icon-pencil"></i>所属题库</th>
             <th><i class="icon-tag"></i>题目</th>
             <th><i class="icon-comment"></i> 答案</th>
             <th><i class="icon-asterisk"></i> 操作</th>
@@ -162,6 +171,10 @@ $message_list = $oapost->view_list(null, null, null, 'public', 'bank', $page, $m
         <?php if($message_list){ foreach($message_list as $v){ ?>
         <tr>
             <td><?php echo $v['post_date']; ?></td>
+            <td><?php 
+                $bank_list= $oapost->view($v['post_parent']);
+            if($bank_list){  ?>
+            <?php echo $bank_list['post_title']; ?><?php }  ?></td>
             <td><?php if(isset($select_bank_arr[$v['post_name']])){ echo $select_bank_arr[$v['post_name']]; } ?></td>
             <td><?php echo $v['post_title']; ?></td>
             <td><div class="btn-group"><a href="<?php echo $page_url;?>&edit=<?php echo $v['id']; ?>#edit" role="button" class="btn"><i class="icon-pencil"></i> 编辑</a><a href="<?php echo $page_url;?>&del=<?php echo $v['id']; ?>" class="btn btn-danger"><i class="icon-trash icon-white"></i> 删除</a></div></td>
