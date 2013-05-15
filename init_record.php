@@ -27,40 +27,6 @@ $message_bool = false;
 
 
 /**
- * 编辑考试记录
- * @since 2
- */
-if (isset($_POST['edit_title']) == true && isset($_POST['edit_name']) == true && isset($_GET['edit']) == true) {
-    $edit_res = $oapost->view($_GET['edit']);
-    if ($edit_res) {
-        if ($_POST['edit_title']) {
-            $title = '';
-            //引入截取字符串模块
-            require_once(DIR_LIB . DS . 'plug-substrutf8.php');
-            $title = plugsubstrutf8($_POST['edit_title'], 15);
-            $post_name = 0;
-            if (isset($select_bank_arr[(int) $_POST['edit_name']]) == true) {
-                $post_name = (int) $_POST['edit_name'];
-            }
-            if ($oapost->edit($edit_res['id'], $title, null, 'bank', 0, null, null, $post_name, null, 'public', null)) {
-                $message = '编辑考试记录成功！';
-                $message_bool = true;
-            } else {
-                $message = '无法编辑考试记录。';
-                $message_bool = false;
-            }
-        } else {
-            $message = '考试记录名称不能为空。';
-            $message_bool = false;
-        }
-    } else {
-        $message = '考试记录不存在。';
-        $message_bool = false;
-    }
-}
-
-
-/**
  * 删除考试记录
  * @since 3
  */
@@ -119,19 +85,22 @@ $message_list = $oapost->view_list(null, null, null, 'public', 'record_b', $page
         <tr>
             <th><i class="icon-user"></i> 用户名</th>
             <th><i class="icon-calendar"></i>时间</th>
-            <th><i class="icon-comment"></i> 所属题库</th>
-            <th><i class="icon-tag"></i> 答题情况/分数</th>
+            <th><i class="icon-comment"></i> 题库名</th>
+            <th><i class="icon-tag"></i> 分数</th>
             <th><i class="icon-asterisk"></i> 操作</th>
         </tr>
     </thead>
     <tbody id="message_list">
         <?php if($message_list){ foreach($message_list as $v){ ?>
         <tr>
-            <td><?php echo $v['post_user']; ?></td>
+            <td><?php 
+            $user_list= $oauser->view_user($v['post_user']);
+            if($user_list){ foreach($user_list as $t){ ?>
+            <?php echo $t['user_username']; ?><?php } } ?>
             <td><?php echo $v['post_date']; ?></td>
             <td><?php echo $v['post_parent']; ?></td>
             <td><?php echo $v['post_url']; ?></td>
-            <td><div class="btn-group"><a href="<?php echo $page_url;?>&edit=<?php echo $v['id']; ?>#edit" role="button" class="btn"><i class="icon-pencil"></i> 编辑</a><a href="<?php echo $page_url;?>&del=<?php echo $v['id']; ?>" class="btn btn-danger"><i class="icon-trash icon-white"></i> 删除</a></div></td>
+            <td><div class="btn-group"><a href="<?php echo $page_url;?>&del=<?php echo $v['id']; ?>" class="btn btn-danger"><i class="icon-trash icon-white"></i> 删除</a></div></td>
         </tr>
         <?php } } ?>
     </tbody>
@@ -159,38 +128,6 @@ if (isset($_GET['view']) == false && isset($_GET['edit']) == false) {
     ?>
     
         <?php
-}
-if (isset($_GET['edit']) == true && isset($_GET['view']) == false && isset($_GET['new']) == false) {
-    $edit_message = $oapost->view($_GET['edit']);
-    if ($edit_message) {
-        ?>
-    <!-- 编辑考试记录信息 -->
-            <div id="edit">
-                <h2>编辑考试记录信息</h2>
-                <p>编辑考试记录信息。</p>
-                <form action="<?php echo $page_url.'&edit='.$edit_message['id']; ?>" method="post" class="form-actions">
-                    <div class="control-group">
-                        <label class="control-label" for="edit_name">专业科目</label>
-                        <div class="bs-docs-example">
-                            <select name="edit_name">
-                                <?php foreach($select_bank_arr as $k=>$v){ ?>
-                                <option value="<?php echo $k; ?>" <?php if($k == $edit_message['post_name']){ echo 'selected'; } ?>><?php echo $v; ?></option>
-                                <?php } ?>
-                            </select>
-                        </div>
-                        <label class="control-label" for="edit_title">名称</label>
-                        <div class="controls">
-                            <textarea rows="2" id="edit_title" name="edit_title" placeholder="名称"><?php echo $edit_message['post_title']; ?></textarea>
-                        </div>
-                        <div>
-                            <button type="submit" class="btn btn-primary"><i class="icon-ok icon-white"></i> 修改</button>
-                            <a href="<?php echo $page_url; ?>" role="button" class="btn"><i class="icon-remove"></i> 取消</a>
-                        </div>
-                    </div>
-                </form>
-            </div>
-    <?php
-    }
 }
         if (isset($_GET['view']) == true) {
             $view_message = $oapost->view($_GET['view']);
