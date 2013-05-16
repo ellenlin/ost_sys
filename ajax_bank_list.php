@@ -3,7 +3,7 @@
 /**
  * ajax获取题库列表
  * @author fotomxq <fotomxq.me>
- * @version 1
+ * @version 2
  * @package ost_sys
  */
 /**
@@ -24,8 +24,9 @@ $bank_type = isset($_GET['type']) ? $_GET['type'] : 0;
 
 /**
  * 获取题库列表
- * @since 1
+ * @since 2
  */
+$oapost->set_where_name_on(true);
 $bank_list = $oapost->view_list(null, null, null, 'public', 'bank', $page, $max, $sort, $desc, null, $bank_type);
 
 /**

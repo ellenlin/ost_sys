@@ -4,7 +4,7 @@
  * 题目操作类
  * <p>需要：oa-post类、plug-substrutf8模块</p>
  * @author fotomxq <fotomxq.me>
- * @version 4
+ * @version 5
  * @package PlugSubject
  */
 class plugsubject extends oapost {
@@ -95,7 +95,7 @@ class plugsubject extends oapost {
      * 输出当前题库所有题目HTML
      * <p>需要配合bootstrap才能达到最佳效果</p>
      * <p>仅生成表单组件，表单需要提前在页面中定义</p>
-     * @since 3
+     * @since 5
      * @return string
      */
     public function html_get() {
@@ -107,24 +107,24 @@ class plugsubject extends oapost {
                 $v_res = parent::view($v['id']);
                 $content_arr = $this->question_get_arr($v_res['post_content']);
                 $html_name = 'input_' . $v['id'];
-                $input_html = '<input class="hidden" name="'.$html_name.'" value="">';
-                $return .= $input_html.'<dl><dt>第' . $question_id . '题 - ' . $v_res['post_title'] . '</dt><dd>';
+                $input_html = '<input class="hidden" name="' . $html_name . '" value="">';
+                $return .= $input_html . '<dl><dt>第' . $question_id . '题 - ' . $v_res['post_title'] . '</dt><dd>';
                 switch ($v_res['post_name']) {
                     case 'radio':
                         $v_q_arr = $this->question_select_get_arr($content_arr[0]);
                         foreach ($v_q_arr as $k => $v) {
-                            $return .= '<label class="radio"><input type="radio" name="' . $html_name . '" value="' . $k . '">' . $v . '</label>';
+                            $return .= '<label class="radio"><input type="radio" name="' . $html_name . '" value="' . $k . '">' . $this->question_select_arr[$k] . '、' . $v . '</label>';
                         }
                         break;
                     case 'check':
                         $v_q_arr = $this->question_select_get_arr($content_arr[0]);
                         foreach ($v_q_arr as $k => $v) {
-                            $return .= '<label class="checkbox"><input type="checkbox" name="' . $html_name . '" value="' . $k . '">' . $v . '</label>';
+                            $return .= '<label class="checkbox"><input type="checkbox" name="' . $html_name . '" value="' . $k . '">' . $this->question_select_arr[$k] . '、' . $v . '</label>';
                         }
                         $return .= '';
                         break;
                     case 'boolean':
-                        $return .= '<label class="radio"><input type="radio" name="' . $html_name . '" value="1" checked>正确</label><label class="radio"><input type="radio" name="' . $html_name . '" value="0">错误</label>';
+                        $return .= '<label class="radio"><input type="radio" name="' . $html_name . '" value="1">正确</label><label class="radio"><input type="radio" name="' . $html_name . '" value="0">错误</label>';
                         break;
                     case 'content':
                     default:
@@ -140,13 +140,130 @@ class plugsubject extends oapost {
     }
 
     /**
-     * 遍历考试结果并记录
-     * @since 2
-     * @param type $inputs
-     * @return boolean
+     * 分析并记录考试结果
+     * @since 5
+     * @param array $data 结果数据数组
+     * @return int 考试得分
      */
-    public function html_put($inputs) {
-        $return = false;
+    public function html_put($data) {
+        $return = 0;
+        $bank_fraction = 0;
+        $record_question_type = 'record_q';
+        $record_bank_type = 'record_b';
+        $post_status = 'private';
+        //添加试卷记录
+        $bank_res = parent::view($this->bank_id);
+        $record_bank_id = $this->add($bank_res['post_title'], $bank_res['post_content'], $record_bank_type, 0, $this->user_id, null, null, null, $post_status, null);
+        if ($record_bank_id > 0) {
+            foreach ($data as $v) {
+                $v_res = parent::view($v[0]);
+                if ($v_res) {
+                    $ls_contents = $this->question_get_arr($v_res['post_content']);
+                    //该题目得分分值，0表明没有得分
+                    $post_order = 0;
+                    //如果回答正确
+                    if ($ls_contents[1] == $v[1]) {
+                        $bank_fraction += $v_res['post_url'];
+                        $post_order = $v_res['post_url'];
+                    }
+                    //添加题目记录
+                    $record_question_id = $this->add($v_res['post_title'], $v_res['post_content'], $record_question_type, $record_bank_id, $this->user_id, null, $v_res['post_name'], $v[1], $post_status, null);
+                    if ($record_question_id > 0) {
+                        $this->edit_order($record_question_id, $post_order);
+                    }
+                }
+            }
+            //修改试卷得分
+            $this->edit_order($record_bank_id, $bank_fraction);
+            $return = $bank_fraction;
+        }
+        return $return;
+    }
+
+    /**
+     * 获取题目内容
+     * @since 5
+     * @param int $id ID
+     * @return null
+     */
+    public function view($id) {
+        $return = null;
+        $res = parent::view($id);
+        $contents = $this->question_get_arr($res['post_content']);
+        $content = '';
+        $answer = '';
+        switch ($res['post_type']) {
+            case 'radio':
+                $ls_contents = $this->question_select_get_arr($contents[0]);
+                foreach ($ls_contents as $v) {
+                    $content .= '<p>' . $v . '</p>';
+                }
+                break;
+            case 'check':
+                $ls_contents = $this->question_select_get_arr($contents[0]);
+                foreach ($ls_contents as $v) {
+                    $content .= '<p>' . $v . '</p>';
+                }
+                break;
+            case 'boolean':
+                $content = $res['post_title'];
+                break;
+            default:
+                $content = $contents[0];
+                break;
+        }
+        $answer = $this->view_answer($contents[1], $res['post_name']);
+        $res['content_html'] = '<p>' . $content . '</p><p>答案：' . $answer . '</p>';
+        $return = $res;
+        return $return;
+    }
+
+    /**
+     * 显示答案部分
+     * @since 1
+     * @param string $answer 答案原始数据
+     * @param string $type 题目类型
+     * @return string
+     */
+    function view_answer($answer, $type) {
+        switch ($type) {
+            case 'radio':
+                return $this->question_select_arr[$answer];
+                break;
+            case 'check':
+                $answers = $this->question_select_get_arr($answer);
+                $return = '';
+                foreach ($answers as $v) {
+                    $return .= ',' . $v;
+                }
+                return substr($return, 1);
+                break;
+            case 'boolean':
+                if ($answer) {
+                    return '正确';
+                } else {
+                    return '错误';
+                }
+                break;
+            default:
+                return $answer;
+                break;
+        }
+    }
+
+    /**
+     * 计算试卷总分值
+     * @since 5
+     * @return int
+     */
+    public function sum_bank_fraction() {
+        $return = 0;
+        $questions = $this->view_subject_list(1, 9999, 0, false);
+        if ($questions) {
+            foreach ($questions as $v) {
+                $return += (int) $v['post_url'];
+            }
+        }
         return $return;
     }
 
@@ -275,17 +392,6 @@ class plugsubject extends oapost {
      */
     private function question_get_arr($content) {
         return explode($this->delimiter_content, $content);
-    }
-
-    /**
-     * 根据题目描述获取标题
-     * <p>截取描述的前100字用于标题</p>
-     * @since 1
-     * @param string $content
-     * @return string
-     */
-    private function title_get($content) {
-        return plugsubstrutf8($content, 100);
     }
 
     /**

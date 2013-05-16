@@ -2,7 +2,7 @@
 /**
  * 考试中心
  * @author suhuiling
- * @version 5
+ * @version 6
  * @package ost_sys
  */
 if (isset($init_page) == false) {
@@ -11,10 +11,10 @@ if (isset($init_page) == false) {
 
 /**
  * 初始化变量
- * @since 3
+ * @since 6
  */
 $page = isset($_GET['page']) ? $_GET['page'] : 1;
-$max = 10;
+$max = 9999;
 $sort = 0;
 $desc = true;
 
@@ -59,15 +59,40 @@ $bank_type = pluggetbank($oaconfig);
 <script>
     //提交答卷
     function test_submit(){
+         //初始化相关数据
         $("form").data("submit","2");
+        $("form").data("submit-data",new Array());
+        //遍历所有input[class=hidden]组件
         $("form").find("input[class='hidden']").each(function(){
             if($(this).attr("value") === ""){
+                //如果该题目没有填写内容
                 $("form").data("submit","1");
                 return;
+            }else{
+                var arr = new Array($(this).attr("name").substr(6),$(this).attr("value"));
+                var data_arr = $("form").data("submit-data");
+                data_arr.push(arr);
+                $("form").data("submit-data",data_arr);
             }
         });
-        if($("form").data("submit") == "2"){
-            //$("form").submit();
+        if($("form").data("submit") === "2" && $("form").data("submit-data") !== ""){
+            if($("form").data("ajax") == "1"){
+                $("form").data("ajax","0");
+                $.post($("form").data("url"),{
+                    "subject":$("form").data("submit-data")
+                },function(data){
+                    if(data){
+                        $("form").html("<p>试卷总分值："+data['status'][0]+"</p><p>本次考试得分："+data['status'][1]+"</p>");
+                    }
+                    //复位相关数据
+                    $("form").data("ajax","1");
+                    $("form").data("submit-data","");
+                    //删除顶部选单
+                    clearTimeout(time_handle);
+                    $("#select_input").remove();
+                    $("#time_id").remove();
+                },"json");
+            }
         }
         msg($("form").data("submit"),"试卷提交成功。","答案填写不完整，无法交卷。");
     }
@@ -139,7 +164,7 @@ $bank_type = pluggetbank($oaconfig);
                         $("form").find("input[type='checkbox']").change(function(){
                             $("form").data("ls","");
                             $("form").find("input[name='"+$(this).attr("name")+"'][type='checkbox']:checked").each(function(){
-                                $("form").data("ls",$("form").data("ls")+","+$(this).attr("value"));
+                                $("form").data("ls",$("form").data("ls")+"|"+$(this).attr("value"));
                             });
                             $("form > input[name='"+$(this).attr("name")+"'][class='hidden']").attr("value",$("form").data("ls").substr(1));
                         });
@@ -151,6 +176,7 @@ $bank_type = pluggetbank($oaconfig);
                         $("form").html(html);
                         $("form").data("test","0");
                     }
+                    $("form").data("ajax","1");
                 },"json");
             }else{
                 test_submit();

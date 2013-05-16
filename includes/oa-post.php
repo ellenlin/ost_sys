@@ -10,7 +10,7 @@
  * <p>* 留言薄：post_type必须为messageboard；post_user表示发表用户；post_content表示留言内容；post_parent回复上一级ID</p>
  * <p>  留言薄示例：ID=1,post_type='messageboard',post_user=1,post_content='内容',post_partent=0</p>
  * @author suhuiling
- * @version 1
+ * @version 6
  * @package ost_sys
  */
 class oapost {
@@ -20,7 +20,7 @@ class oapost {
      * @since 5
      * @var array 
      */
-    private $type_values = array('message' => 'message', 'text' => 'text', 'addressbook' => 'addressbook', 'messageboard' => 'messageboard','bank' => 'bank','question' => 'question','record_q' => 'question_q','record_b' => 'record_b','favorite'=>'favorite','error'=>'error');
+    private $type_values = array('message' => 'message', 'text' => 'text', 'addressbook' => 'addressbook', 'messageboard' => 'messageboard', 'bank' => 'bank', 'question' => 'question', 'record_q' => 'question_q', 'record_b' => 'record_b', 'favorite' => 'favorite', 'error' => 'error');
 
     /**
      * 表名称
@@ -49,6 +49,13 @@ class oapost {
      * @var array 
      */
     private $fields;
+
+    /**
+     * 条件name临时补充
+     * @since 6
+     * @var boolean 
+     */
+    private $where_name_on = false;
 
     /**
      * 初始化
@@ -104,9 +111,12 @@ class oapost {
             //可以提交空字符串以废除该条件
             if ($name) {
                 $sql_where = $sql_where . ' `post_name`=:name AND';
+            } else {
+                if ($this->where_name_on == true) {
+                    $sql_where = $sql_where . ' `post_name`=\'0\' AND';
+                }
             }
         } else {
-            
             $sql_where = $sql_where . ' `post_name` is NULL AND';
         }
         $sql_desc = $desc ? 'DESC' : 'ASC';
@@ -173,6 +183,10 @@ class oapost {
             //可以提交空字符串以废除该条件
             if ($name) {
                 $sql_where = $sql_where . ' `post_name`=:name AND';
+            } else {
+                if ($this->where_name_on == true) {
+                    $sql_where = $sql_where . ' `post_name`=\'0\' AND';
+                }
             }
         } else {
             $sql_where = $sql_where . ' `post_name` is NULL AND';
@@ -201,6 +215,15 @@ class oapost {
             $return = $sth->fetchColumn();
         }
         return $return;
+    }
+
+    /**
+     * 设定条件name=0的开关
+     * @since 6
+     * @param boolean $b 条件开关
+     */
+    public function set_where_name_on($b) {
+        $this->where_name_on = $b;
     }
 
     /**
@@ -297,6 +320,25 @@ class oapost {
         $sth->bindParam(':url', $url, PDO::PARAM_STR | PDO::PARAM_INPUT_OUTPUT);
         $sth->bindParam(':status', $status, PDO::PARAM_STR | PDO::PARAM_INPUT_OUTPUT);
         $sth->bindParam(':meta', $meta, PDO::PARAM_STR | PDO::PARAM_INPUT_OUTPUT);
+        $sth->bindParam(':id', $id, PDO::PARAM_INT | PDO::PARAM_INPUT_OUTPUT);
+        if ($sth->execute() == true) {
+            $return = true;
+        }
+        return $return;
+    }
+
+    /**
+     * 修改排序规则
+     * @since 6
+     * @param int $id ID
+     * @param int $order 排序
+     * @return boolean
+     */
+    public function edit_order($id, $order) {
+        $return = false;
+        $sql = 'UPDATE `' . $this->table_name . '` SET `post_order`=:order WHERE `id`=:id';
+        $sth = $this->db->prepare($sql);
+        $sth->bindParam(':order', $order, PDO::PARAM_INT | PDO::PARAM_INPUT_OUTPUT);
         $sth->bindParam(':id', $id, PDO::PARAM_INT | PDO::PARAM_INPUT_OUTPUT);
         if ($sth->execute() == true) {
             $return = true;
