@@ -81,7 +81,7 @@ CREATE TABLE IF NOT EXISTS `ost_configs` (
 
 INSERT INTO `ost_configs` (`id`, `config_name`, `config_value`, `config_default`) VALUES
 (1, 'WEB_TITLE', 0xe8aea1e7ae97e69cbae4b893e4b89ae88083e7a094e79c9fe9a298e6a8a1e68b9fe88083e8af95e7b3bbe7bb9f, 0xe8aea1e7ae97e69cbae4b893e4b89ae88083e7a094e79c9fe9a298e6a8a1e68b9fe88083e8af95e7b3bbe7bb9f),
-(2, 'USER_TIMEOUT', 0x393030, 0x393030),
+(2, 'USER_TIMEOUT', '10800', '10800'),
 (3, 'UPLOADFILE_SIZE_MIN', 0x31, 0x31),
 (4, 'UPLOADFILE_SIZE_MAX', 0x313533363030, 0x313533363030),
 (5, 'UPLOADFILE_ON', 0x31, 0x31),

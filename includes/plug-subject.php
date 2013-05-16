@@ -4,7 +4,7 @@
  * 题目操作类
  * <p>需要：oa-post类、plug-substrutf8模块</p>
  * @author fotomxq <fotomxq.me>
- * @version 2
+ * @version 3
  * @package PlugSubject
  */
 class plugsubject extends oapost {
@@ -95,7 +95,7 @@ class plugsubject extends oapost {
      * 输出当前题库所有题目HTML
      * <p>需要配合bootstrap才能达到最佳效果</p>
      * <p>仅生成表单组件，表单需要提前在页面中定义</p>
-     * @since 2
+     * @since 3
      * @return string
      */
     public function html_get() {
@@ -107,44 +107,45 @@ class plugsubject extends oapost {
                 $v_res = parent::view($v['id']);
                 $content_arr = $this->question_get_arr($v_res['post_content']);
                 $html_name = 'input_' . $v['id'];
-                $return .= '<dl><dt>第' .$question_id.'题 : '. $v_res['post_title'] . '</dt><dd>';
-                switch ($v_res) {
-                    case 0:
+                $input_html = '<input class="hidden" name="'.$html_name.'" value="">';
+                $return .= $input_html.'<dl><dt>第' . $question_id . '题 - ' . $v_res['post_title'] . '</dt><dd>';
+                switch ($v_res['post_name']) {
+                    case 'radio':
                         $v_q_arr = $this->question_select_get_arr($content_arr[0]);
                         foreach ($v_q_arr as $k => $v) {
                             $return .= '<label class="radio"><input type="radio" name="' . $html_name . '" value="' . $k . '">' . $v . '</label>';
                         }
                         break;
-                    case 1:
+                    case 'check':
                         $v_q_arr = $this->question_select_get_arr($content_arr[0]);
                         foreach ($v_q_arr as $k => $v) {
                             $return .= '<label class="checkbox"><input type="checkbox" name="' . $html_name . '" value="' . $k . '">' . $v . '</label>';
                         }
                         $return .= '';
                         break;
-                    case 2:
+                    case 'boolean':
                         $return .= '<label class="radio"><input type="radio" name="' . $html_name . '" value="1" checked>正确</label><label class="radio"><input type="radio" name="' . $html_name . '" value="0">错误</label>';
                         break;
-                    case 3:
+                    case 'content':
                     default:
                         $return .= '<p>' . $content_arr[0] . '</p><p><textarea name="' . $html_name . '" rows="3" placeholder="答案..."></textarea></p>';
                         break;
                 }
                 $return .= '</dd></dl>';
-                $question_id ++;
+                $question_id++;
                 $v_res = null;
             }
         }
         return $return;
     }
-    
+
     /**
      * 遍历考试结果并记录
      * @since 2
      * @param type $inputs
      * @return boolean
      */
-    public function html_put($inputs){
+    public function html_put($inputs) {
         $return = false;
         return $return;
     }
@@ -221,7 +222,7 @@ class plugsubject extends oapost {
                 //复选题
                 if (is_array($content) == true) {
                     $post_content = implode($this->delimiter, $content);
-                    if(is_array($answer) == true){
+                    if (is_array($answer) == true) {
                         $post_answer = implode($this->delimiter, $answer);
                     }
                 }

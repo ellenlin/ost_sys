@@ -2,7 +2,7 @@
 /**
  * 登录后首页
  * @author suhuiling
- * @version 2
+ * @version 3
  * @package ost_sys
  */
 /**
@@ -76,6 +76,7 @@ $tip_message_row = $oapost->view_list_row(null, null, null, 'private', 'message'
                     $(id).attr("class","alert alert-error");
                     $(id).html("<p>"+error+"</p>");
                 }
+                $(document).scrollTop(0);
             }
             
             //延迟刷新或跳转页面模块

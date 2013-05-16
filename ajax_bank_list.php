@@ -20,10 +20,24 @@ $page = 1;
 $max = 10;
 $sort = 0;
 $desc = true;
-$bank_type = '';
+$bank_type = isset($_GET['type']) ? $_GET['type'] : 0;
 
 /**
  * 获取题库列表
+ * @since 1
  */
-$bank_list = $oapost->view_list(null, null, null, 'public', 'bank', $page, $max, $sort, $desc, null, '');
+$bank_list = $oapost->view_list(null, null, null, 'public', 'bank', $page, $max, $sort, $desc, null, $bank_type);
+
+/**
+ * 引用反馈头处理模块
+ * @since 1
+ */
+require(DIR_LIB . DS . 'plug-feedback.php');
+
+/**
+ * 反馈JSON
+ * @since 1
+ */
+plugfeedbackheaderjson();
+plugfeedbackjson($bank_list);
 ?>
