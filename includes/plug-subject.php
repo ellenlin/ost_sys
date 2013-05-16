@@ -4,7 +4,7 @@
  * 题目操作类
  * <p>需要：oa-post类、plug-substrutf8模块</p>
  * @author fotomxq <fotomxq.me>
- * @version 3
+ * @version 4
  * @package PlugSubject
  */
 class plugsubject extends oapost {
@@ -152,10 +152,18 @@ class plugsubject extends oapost {
 
     /**
      * 添加新的题目
+     * <p>单选题实例：$plugsubject->add_subject('单选题标题',array('选项A','选项B','选项C'),0,0,5);</p>
+     * <p>多选题实例：$plugsubject->add_subject('多选题标题',array('选项A','选项B','选项C'),array(0,1),0,5);</p>
+     * <p>判断题实例：$plugsubject->add_subject('判断题标题','判断题内容',1,0,5);</p>
+     * <p>问答题实例：$plugsubject->add_subject('问答题标题','问答题内容','问答题答案',0,5);</p>
      * @since 2
      * @param string $title 标题
-     * @param string $content 内容
-     * @param string $answer 答案
+     * @param string|array $content 内容
+     * <p>选择题必须提交数组</p>
+     * @param string|array $answer 答案
+     * <p>*选择题对应$content数组键值，如上例中正确答案为A，则参数为0</p>
+     * <p>*多选题必须提交数组，如上例中正确答案为A和B，则参数为array(0,1)</p>
+     * <p>*问答题提交1表明正确答案为正确，反之提交0</p>
      * @param string $type 题目类型
      * @param int $fraction 分数
      * @return int 记录ID
@@ -167,6 +175,7 @@ class plugsubject extends oapost {
 
     /**
      * 编辑题目
+     * <p>具体参考添加新题目方法，除$id参数外其他参数均相同。</p>
      * @since 2
      * @param int $id 题目ID
      * @param string $title 标题
