@@ -153,9 +153,9 @@ class plugsubject extends oapost {
     /**
      * 添加新的题目
      * <p>单选题实例：$plugsubject->add_subject('单选题标题',array('选项A','选项B','选项C'),0,0,5);</p>
-     * <p>多选题实例：$plugsubject->add_subject('多选题标题',array('选项A','选项B','选项C'),array(0,1),0,5);</p>
-     * <p>判断题实例：$plugsubject->add_subject('判断题标题','判断题内容',1,0,5);</p>
-     * <p>问答题实例：$plugsubject->add_subject('问答题标题','问答题内容','问答题答案',0,5);</p>
+     * <p>多选题实例：$plugsubject->add_subject('多选题标题',array('选项A','选项B','选项C'),array(0,1),1,5);</p>
+     * <p>判断题实例：$plugsubject->add_subject('判断题标题','判断题内容',1,2,5);</p>
+     * <p>问答题实例：$plugsubject->add_subject('问答题标题','问答题内容','问答题答案',3,5);</p>
      * @since 2
      * @param string $title 标题
      * @param string|array $content 内容
@@ -165,6 +165,10 @@ class plugsubject extends oapost {
      * <p>*多选题必须提交数组，如上例中正确答案为A和B，则参数为array(0,1)</p>
      * <p>*问答题提交1表明正确答案为正确，反之提交0</p>
      * @param string $type 题目类型
+     * <p>*0-单选题</p>
+     * <p>*1-多选题</p>
+     * <p>*2-判断题</p>
+     * <p>*3-问答题</p>
      * @param int $fraction 分数
      * @return int 记录ID
      */
