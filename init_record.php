@@ -96,13 +96,13 @@ $message_list = $oapost->view_list(null, null, null, 'private', 'record_b', $pag
             <td><?php 
             $user_list= $oauser->view_user($v['post_user']);
             if($user_list){  ?>
-            <?php echo $user_list['user_username']; ?><?php } ?>
+            <?php echo $user_list['user_username']; ?><?php } ?></td>
             <td><?php echo $v['post_date']; ?></td>
             <td><?php 
                 $bank_list= $oapost->view($v['post_parent']);
             if($bank_list){  ?>
             <?php echo $bank_list['post_title']; ?><?php }  ?></td>
-            <td><?php echo $v['post_url']; ?></td>
+            <td><?php echo $v['post_order']; ?></td>
             <td><div class="btn-group"><a href="<?php echo $page_url;?>&del=<?php echo $v['id']; ?>" class="btn btn-danger"><i class="icon-trash icon-white"></i> 删除</a></div></td>
         </tr>
         <?php }  }?>

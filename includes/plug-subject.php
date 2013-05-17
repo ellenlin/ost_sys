@@ -36,7 +36,7 @@ class plugsubject extends oapost {
      * @since 1
      * @var array
      */
-    public $question_select_arr = array('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z');
+    public $question_select_arr = array('0','A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z');
 
     /**
      * 选项分隔符
@@ -181,7 +181,7 @@ class plugsubject extends oapost {
     }
 
     /**
-     * 获取题目内容
+     * 获取选项内容
      * @since 5
      * @param int $id ID
      * @return null
@@ -191,12 +191,12 @@ class plugsubject extends oapost {
         $res = parent::view($id);
         $contents = $this->question_get_arr($res['post_content']);
         $content = '';
-        $answer = '';
+        $t=1;
         switch ($res['post_type']) {
             case 'radio':
                 $ls_contents = $this->question_select_get_arr($contents[0]);
                 foreach ($ls_contents as $v) {
-                    $content .= '<p>' . $v . '</p>';
+                    $content .= '<p>' .$this->question_select_arr[$t++].":". $v . '</p>';
                 }
                 break;
             case 'check':
@@ -212,9 +212,8 @@ class plugsubject extends oapost {
                 $content = $contents[0];
                 break;
         }
-        $answer = $this->view_answer($contents[1], $res['post_name']);
-        $res['content_html'] = '<p>' . $content . '</p><p>答案：' . $answer . '</p>';
-        $return = $res;
+        $res['content_html'] = '<p>' . $content . '</p>';
+        $return = $res['content_html'];
         return $return;
     }
 
@@ -234,7 +233,7 @@ class plugsubject extends oapost {
                 $answers = $this->question_select_get_arr($answer);
                 $return = '';
                 foreach ($answers as $v) {
-                    $return .= ',' . $v;
+                    $return .= ','.$this->question_select_arr[$v];
                 }
                 return substr($return, 1);
                 break;
