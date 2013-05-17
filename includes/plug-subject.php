@@ -4,7 +4,7 @@
  * 题目操作类
  * <p>需要：oa-post类、plug-substrutf8模块</p>
  * @author fotomxq <fotomxq.me>
- * @version 5
+ * @version 6
  * @package PlugSubject
  */
 class plugsubject extends oapost {
@@ -141,7 +141,7 @@ class plugsubject extends oapost {
 
     /**
      * 分析并记录考试结果
-     * @since 5
+     * @since 6
      * @param array $data 结果数据数组
      * @return int 考试得分
      */
@@ -153,7 +153,7 @@ class plugsubject extends oapost {
         $post_status = 'private';
         //添加试卷记录
         $bank_res = parent::view($this->bank_id);
-        $record_bank_id = $this->add($bank_res['post_title'], $bank_res['post_content'], $record_bank_type, 0, $this->user_id, null, null, null, $post_status, null);
+        $record_bank_id = $this->add($bank_res['post_title'], $bank_res['post_content'], $record_bank_type, $this->bank_id, $this->user_id, null, null, null, $post_status, null);
         if ($record_bank_id > 0) {
             foreach ($data as $v) {
                 $v_res = parent::view($v[0]);
