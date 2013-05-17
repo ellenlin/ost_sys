@@ -2,7 +2,7 @@
 /**
  * 我的错题管理
  * @author suhuiling
- * @version 1
+ * @version 4
  * @package ost_sys
  */
 if (isset($init_page) == false) {
@@ -78,8 +78,19 @@ $page_next = $page + 1;
  */
 $error_list = $oapost->view_list($post_user, null, null, 'private', 'record_q', $page, $max, $sort, $desc, null, '');
 
-
-
+/**
+ * 创建相关变量
+ * @since 4
+ */
+require_once(DIR_LIB . DS . 'plug-substrutf8.php');
+require_once(DIR_LIB . DS . 'plug-subject.php');
+$plugsubject = null;
+//读取用户最近的一个错题题库ID
+$error_recents = $oapost->view_list($post_user, null, null, 'private', 'record_b', 1, 1, 0, false);
+if ($error_recents) {
+    $plugsubject = new plugsubject($error_recents[0]['post_parent'], $db, $ip_arr['id'], $post_user);
+    
+}
 ?>
 <!-- 管理表格 -->
 <h2>我的错题</h2>
@@ -98,17 +109,20 @@ $error_list = $oapost->view_list($post_user, null, null, 'private', 'record_q', 
                 ?>
         <tr>
             <td><?php echo $v['post_date']; ?></td>
-            <td><?php  $answer = explode('||',$v['post_content']);
-                        echo $v['post_title'];?>
+            <td><?php
+                        echo $v['post_title'];
+                        ?>
                 <br>
-                <?php echo $answer[0]; ?></td>
-            <td><?php ;
-                       echo $answer[1];?></td>
-            <td><?php $my_an=explode('|',$v['post_url']);
-                        $temp='';
-                       foreach($my_an as $t){
-                           echo $t+1 . '|';
-                       }?></td>
+                <?php
+                    $contents = explode('||', $v['post_content']);
+                    echo $plugsubject->view_content($contents[0], $v['post_name']);
+                ?></td>
+            <td><?php
+            echo $plugsubject->view_answer($contents[1], $v['post_name']);
+            ?></td>
+            <td><?php
+            echo $plugsubject->view_answer($v['post_url'], $v['post_name']);
+            ?></td>
             <td><div class="btn-group"><a href="<?php echo $page_url;?>&del=<?php echo $v['id']; ?>" class="btn btn-danger"><i class="icon-trash icon-white"></i> 删除</a></div></td>
         </tr>
         <?php }  }?>
@@ -125,15 +139,13 @@ $error_list = $oapost->view_list($post_user, null, null, 'private', 'record_q', 
     </li>
 </ul>
 
-
-
-        <!-- Javascript -->
-        <script>
-            $(document).ready(function(){
-                var message = "<?php echo $message; ?>";
-                var message_bool = "<?php echo $message_bool ? '2' : '1'; ?>";
-                if(message != ""){
-                    msg(message_bool,message,message);
-                }
-            });
-        </script>
+<!-- Javascript -->
+<script>
+    $(document).ready(function(){
+        var message = "<?php echo $message; ?>";
+        var message_bool = "<?php echo $message_bool ? '2' : '1'; ?>";
+        if(message != ""){
+            msg(message_bool,message,message);
+        }
+    });
+</script>

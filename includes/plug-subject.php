@@ -36,7 +36,7 @@ class plugsubject extends oapost {
      * @since 1
      * @var array
      */
-    public $question_select_arr = array('0','A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z');
+    public $question_select_arr = array('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z');
 
     /**
      * 选项分隔符
@@ -218,13 +218,47 @@ class plugsubject extends oapost {
     }
 
     /**
+     * 获取内容显示
+     * @since 6
+     * @param string $content 题目内容
+     * @param string $type 题目类型
+     * @return string
+     */
+    public function view_content($content, $type) {
+        $return = '';
+        $ls_content = '';
+        switch ($type) {
+            case 'radio':
+                $contents = $this->question_select_get_arr($content);
+                foreach ($contents as $k => $v) {
+                    $ls_content .= '<p>' . $this->question_select_arr[$k] . '、' . $v . '</p>';
+                }
+                break;
+            case 'check':
+                $contents = $this->question_select_get_arr($content);
+                foreach ($contents as $k => $v) {
+                    $ls_content .= '<p>' . $this->question_select_arr[$k] . '、' . $v . '</p>';
+                }
+                break;
+            case 'boolean':
+                $ls_content = $content;
+                break;
+            default:
+                $ls_content = $content;
+                break;
+        }
+        $return = '<p>' . $content . '</p>';
+        return $return;
+    }
+
+    /**
      * 显示答案部分
-     * @since 1
+     * @since 6
      * @param string $answer 答案原始数据
      * @param string $type 题目类型
      * @return string
      */
-    function view_answer($answer, $type) {
+    public function view_answer($answer, $type) {
         switch ($type) {
             case 'radio':
                 return $this->question_select_arr[$answer];
