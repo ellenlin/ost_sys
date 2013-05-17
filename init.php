@@ -148,7 +148,7 @@ $tip_message_row = $oapost->view_list_row(null, null, null, 'private', 'message'
                                     <li><a href="init.php?init=1"><i class="icon-envelope"></i> 个人消息 <?php if($tip_message_row>0){ ?><span class="badge badge-info"><?php echo $tip_message_row; ?></span><?php } ?></a></li>
                                      <?php if($logged_admin == false){ ?>
                                     <li><a href="init.php?init=10"><i class="icon-film"></i> 我的错题</a></li>
-                                    <li><a href="init.php?init=11"><i class="icon-bookmark"></i> 我的收藏</a></li>
+<!--                                    <li><a href="init.php?init=11"><i class="icon-bookmark"></i> 我的收藏</a></li>-->
                                      <?php } ?>
                                     <li><a href="init.php?init=2"><i class="icon-book"></i> 通讯录</a></li>
                                     <li><a href="init.php?init=3"><i class="icon-list-alt"></i> 修改信息</a></li>
@@ -202,7 +202,7 @@ $tip_message_row = $oapost->view_list_row(null, null, null, 'private', 'message'
                             <li><a href="init.php?init=1"><i class="icon-envelope"></i> 个人消息 <?php if($tip_message_row>0){ ?><span class="badge badge-info"><?php echo $tip_message_row; ?></span><?php } ?></a></li>
                             <?php if($logged_admin == false){ ?>
                             <li><a href="init.php?init=10"><i class="icon-film"></i> 我的错题</a></li>
-                            <li><a href="init.php?init=11"><i class="icon-bookmark"></i> 我的收藏</a></li>
+<!--                            <li><a href="init.php?init=11"><i class="icon-bookmark"></i> 我的收藏</a></li>-->
                             <?php } ?>
                             <li><a href="init.php?init=2"><i class="icon-book"></i> 通讯录</a></li>
                             <li><a href="init.php?init=3"><i class="icon-list-alt"></i> 修改信息</a></li>

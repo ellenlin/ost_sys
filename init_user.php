@@ -57,7 +57,7 @@ $group_list = $oauser->view_group_list(1, 999, 0, true);
             <th><i class="icon-envelope"></i> 邮箱</th>
             <th><i class="icon-th"></i> 用户组</th>
             <th><i class="icon-time"></i> 最后登录时间</th>
-            <th><i class="icon-globe"></i> 最后登录IP</th>
+<!--            <th><i class="icon-globe"></i> 最后登录IP</th>-->
             <th><i class="icon-asterisk"></i> 操作</th>
         </tr>
     </thead>
@@ -75,7 +75,7 @@ $group_list = $oauser->view_group_list(1, 999, 0, true);
             <td><?php echo $v['user_email']; ?></td>
             <td><?php echo $v_group['group_name']; ?></td>
             <td><?php echo $v['user_login_date']; ?></td>
-            <td><?php  echo $v_ip['ip_addr']; ?></td>
+<!--            <td><?php  echo $v_ip['ip_addr']; ?></td>-->
             <td><div class="btn-group"><button href="#edit" role="button" class="btn" data-toggle="modal"><i class="icon-pencil"></i> 编辑</button><button href="#del" class="btn btn-danger"><i class="icon-trash icon-white"></i> 删除</button></div></td>
         </tr>
         <?php } } ?>
